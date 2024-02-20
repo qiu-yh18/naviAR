@@ -1,2 +1,22 @@
 # naviAR
-Four AR navigation methods for cyclists, using Turn-by-turn/As-the-crow-flies strategies, and Egocentric/Non-egocentric perspectives.
+Four AR navigation methods for cyclists, using Turn-by-turn (TBT) / As-the-crow-flies (ATCF) strategies, and Egocentric/Non-egocentric perspectives.
+
+## Environment
+We used a city environment from Unity assets store: https://assetstore.unity.com/packages/3d/environments/urban/city-package-107224
+The map from the top-down perspective looks like:
+![map](https://github.com/qiu-yh18/naviAR/assets/54255285/435c6e58-e43f-4fb8-8e27-3f350efe2f92)
+We used a bicycle model from Unity assets store: https://assetstore.unity.com/packages/3d/vehicles/land/free-bicycle-pack-199782
+
+## Four methods
+### Turn sign: Egocentric TBT
+![turn-sign](https://github.com/qiu-yh18/naviAR/assets/54255285/eaaf0639-3358-486d-8fab-d978af2bc867)
+The turn sign image comes from <a href='https://pngtree.com/freepng/vector-turn-right-icon_4184100.html'>png image from pngtree.com/</a>
+
+### Absolute arrow: Egocentric ATCF
+![absolute-arrow](https://github.com/qiu-yh18/naviAR/assets/54255285/c68f747d-2bf5-42c8-986f-cfadab2e26ac)
+
+### Road highlight: Non-egocentric TBT
+![highlight](https://github.com/qiu-yh18/naviAR/assets/54255285/40377955-ae08-4241-bc19-94ad8126c66a)
+
+### Beacon: Non-egocentric ATCF
+![beacon](https://github.com/qiu-yh18/naviAR/assets/54255285/1106e9a7-dcd2-4670-baf5-b268e14abf17)
