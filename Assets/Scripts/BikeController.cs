@@ -4,8 +4,16 @@ public class BikeController : MonoBehaviour
 {
     public float speed = 3f;
     public float rotationSpeed = 80f;
-    public GameObject city;
-    public float speedGain = 0f;
+    public GameObject environment;
+
+    // The relative speed of the environment moving in the opposite direction. 
+    // If speedGain = 1, the environment moves the same speed as the bike,
+    // making the virtual speed of the bike twice as the physical speed.
+    public float speedGain = 1f;
+
+    // The rotation offset of the environment relative to the bike.
+    // If angleGain = 2, the environment rotates 2 degrees more than the bike.
+    public float angleGain = 0f;
 
     private void Update()
     {
@@ -21,9 +29,9 @@ public class BikeController : MonoBehaviour
             transform.Translate(Vector3.forward * speed * Time.deltaTime);
 
             // Move the city in the opposite direction of the bike's movement
-            if (city != null)
+            if (environment != null)
             {
-                city.transform.Translate(-speedGain*transform.forward * speed * Time.deltaTime, Space.World);
+                environment.transform.Translate(-speedGain*transform.forward * speed * Time.deltaTime, Space.World);
             }
         }
     }
