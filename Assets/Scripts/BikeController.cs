@@ -12,8 +12,8 @@ public class BikeController : MonoBehaviour
     public float speedGain = 1f;
 
     // The rotation offset of the environment relative to the bike.
-    // If angleGain = 2, the environment rotates 2 degrees more than the bike.
-    public float angleGain = 0f;
+    // If angleGain = 1, the environment rotates 1 degree more than the bike.
+    public float angleGain = 0.5f;
 
     private void Update()
     {
@@ -31,6 +31,8 @@ public class BikeController : MonoBehaviour
             // Move the city in the opposite direction of the bike's movement
             if (environment != null)
             {
+                environment.transform.RotateAround(transform.position, Vector3.up, -angleGain * horizontalInput * rotationSpeed * Time.deltaTime);
+                environment.transform.Rotate(Vector3.up, -0.2f*angleGain * speedGain * speed * Time.deltaTime);
                 environment.transform.Translate(-speedGain*transform.forward * speed * Time.deltaTime, Space.World);
             }
         }
