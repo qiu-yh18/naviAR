@@ -5,6 +5,8 @@ public class BikeController : MonoBehaviour
     public float speed = 3f;
     public float rotationSpeed = 80f;
     public GameObject environment;
+    public OVRCameraRig ovrCameraRig;
+    public Vector3 cameraOffset = new Vector3(0f, -1f, 1f);
 
     // The relative speed of the environment moving in the opposite direction. 
     // If speedGain = 1, the environment moves the same speed as the bike,
@@ -35,6 +37,12 @@ public class BikeController : MonoBehaviour
                 environment.transform.Rotate(Vector3.up, -0.2f*angleGain * speedGain * speed * Time.deltaTime);
                 environment.transform.Translate(-speedGain*transform.forward * speed * Time.deltaTime, Space.World);
             }
+        }
+        
+        // Set the bike's position to the OVRCameraRig's position with the offset
+        if (ovrCameraRig != null)
+        {
+            transform.position = ovrCameraRig.transform.position + ovrCameraRig.transform.TransformVector(cameraOffset);
         }
     }
 }
