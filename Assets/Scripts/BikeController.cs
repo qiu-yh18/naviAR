@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class BikeController : MonoBehaviour
 {
-    public float speed = 3f;
-    public float rotationSpeed = 80f;
+    // public float speed = 3f;
+    // public float rotationSpeed = 80f;
     public GameObject environment;
     public OVRCameraRig ovrCameraRig;
     public Vector3 bike2CameraPositionOffset;
@@ -26,11 +26,13 @@ public class BikeController : MonoBehaviour
 
     private void Update()
     {
-        // Set the bike's position to the OVRCameraRig's position with the offset
+        // Update the bike's position based on the calculated offset
         if (ovrCameraRig != null)
         {
-            transform.position = ovrCameraRig.transform.position + ovrCameraRig.transform.TransformVector(bike2CameraPositionOffset);
-            
+            // Calculate the updated position offset
+            Vector3 updatedPositionOffset = ovrCameraRig.transform.TransformVector(bike2CameraPositionOffset);
+            transform.position = ovrCameraRig.transform.position + updatedPositionOffset;
+
             // Calculate the updated rotation offset
             Quaternion updatedRotation = ovrCameraRig.transform.rotation * Quaternion.Euler(bike2CameraRotationOffset);
             transform.rotation = updatedRotation;
