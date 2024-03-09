@@ -6,6 +6,9 @@ public class BikeController : MonoBehaviour
     // public float rotationSpeed = 80f;
     public GameObject environment;
     public OVRCameraRig ovrCameraRig;
+    private Vector3 oldCameraPos;
+    public GameObject trackingSpace;
+    private Vector3 oldTrackingSpacePos;
     public Vector3 bike2CameraPositionOffset;
     public Vector3 bike2CameraRotationOffset;
 
@@ -18,10 +21,15 @@ public class BikeController : MonoBehaviour
     // If angleGain = 1, the environment rotates 1 degree more than the bike.
     public float angleGain = 0.5f;
 
-    private void Start(){
+    private void Awake(){
         // Calculate the initial offset between the bike and the OVRCameraRig
         bike2CameraPositionOffset = transform.position - ovrCameraRig.transform.position;
         bike2CameraRotationOffset = transform.eulerAngles - ovrCameraRig.transform.eulerAngles;
+        oldCameraPos = ovrCameraRig.transform.position;
+        // Debug.Log(oldCameraPos);
+        oldTrackingSpacePos = trackingSpace.transform.position;
+        Debug.Log("!!!!!!");
+        Debug.Log(oldTrackingSpacePos);
     }
 
     private void Update()
@@ -29,6 +37,15 @@ public class BikeController : MonoBehaviour
         // Update the bike's position based on the calculated offset
         if (ovrCameraRig != null)
         {
+            if(ovrCameraRig.transform.position != oldCameraPos){
+                oldCameraPos = ovrCameraRig.transform.position;
+                // Debug.Log(oldCameraPos);
+            }
+            if(trackingSpace.transform.position != oldTrackingSpacePos){
+                oldTrackingSpacePos = trackingSpace.transform.position;
+                Debug.Log("??????");
+                Debug.Log(oldTrackingSpacePos);
+            }
             // Calculate the updated position offset
             Vector3 updatedPositionOffset = ovrCameraRig.transform.TransformVector(bike2CameraPositionOffset);
             transform.position = ovrCameraRig.transform.position + updatedPositionOffset;
