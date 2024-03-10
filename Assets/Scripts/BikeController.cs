@@ -25,11 +25,11 @@ public class BikeController : MonoBehaviour
 
     private void Awake(){
         // Calculate the initial offset between the bike and the OVRCameraRig
-        bike2CameraPositionOffset = transform.position - trackingSpace.transform.position;
-        bike2CameraRotationOffset = transform.eulerAngles - trackingSpace.transform.eulerAngles;
-        oldTrackingSpacePos = trackingSpace.transform.position;
-        Debug.Log("!!!!!!");
-        Debug.Log(oldTrackingSpacePos);
+        // bike2CameraPositionOffset = transform.position - trackingSpace.transform.position;
+        // bike2CameraRotationOffset = transform.eulerAngles - trackingSpace.transform.eulerAngles;
+        // oldTrackingSpacePos = trackingSpace.transform.position;
+        // Debug.Log("!!!!!!");
+        // Debug.Log(oldTrackingSpacePos);
     }
 
     private void Start(){
@@ -37,8 +37,8 @@ public class BikeController : MonoBehaviour
         bike2CameraPositionOffset = transform.position - trackingSpace.transform.position;
         bike2CameraRotationOffset = transform.eulerAngles - trackingSpace.transform.eulerAngles;
         oldTrackingSpacePos = trackingSpace.transform.position;
-        Debug.Log("@@@@");
-        Debug.Log(oldTrackingSpacePos);
+        // Debug.Log("@@@@");
+        // Debug.Log(oldTrackingSpacePos);
     }
 
     private void FixedUpdate()
@@ -57,13 +57,13 @@ public class BikeController : MonoBehaviour
                 Debug.Log("??????");
                 Debug.Log(oldTrackingSpacePos);
             }
-            // Calculate the updated position offset
-            Vector3 updatedPositionOffset = trackingSpace.transform.TransformVector(bike2CameraPositionOffset);
-            transform.position = trackingSpace.transform.position + updatedPositionOffset;
+            // // Calculate the updated position offset
+            // Vector3 updatedPositionOffset = trackingSpace.transform.TransformVector(bike2CameraPositionOffset);
+            // transform.position = trackingSpace.transform.position + updatedPositionOffset;
 
-            // Calculate the updated rotation offset
-            Quaternion updatedRotation = trackingSpace.transform.rotation * Quaternion.Euler(bike2CameraRotationOffset);
-            transform.rotation = updatedRotation;
+            // // Calculate the updated rotation offset
+            // Quaternion updatedRotation = trackingSpace.transform.rotation * Quaternion.Euler(bike2CameraRotationOffset);
+            // transform.rotation = updatedRotation;
         }
 
         // Move the city in the opposite direction of the bike's movement
