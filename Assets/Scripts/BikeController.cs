@@ -47,11 +47,11 @@ public class BikeController : MonoBehaviour
         if (trackingSpace != null)
         {
             // Calculate user movement between frames
-            if(trackingSpace != null && oldTrackingSpacePos != new Vector3(0f,0f,0f)){
+            if(trackingSpace != null && oldTrackingSpacePos != Vector3.zero){
                 movement = trackingSpace.transform.position - oldTrackingSpacePos;
-                movement[2] = 0.0f;
+                movement[1] = 0.0f;
             }
-            if(!isOldPos || oldTrackingSpacePos == new Vector3(0f,0f,0f) || movement.magnitude > movementThreshold){
+            if(!isOldPos || oldTrackingSpacePos == Vector3.zero || movement.magnitude > movementThreshold){
                 isOldPos = true;
                 oldTrackingSpacePos = trackingSpace.transform.position;
                 Debug.Log("??????");
@@ -74,7 +74,7 @@ public class BikeController : MonoBehaviour
         //         environment.transform.Rotate(Vector3.up, -0.2f*angleGain * speedGain * speed * Time.deltaTime);
             }
             if(speedGain>0){
-                environment.transform.Translate(-speedGain * movement * Time.deltaTime, Space.World);
+                environment.transform.Translate(-speedGain * movement, Space.World);
             }
         }
     }
