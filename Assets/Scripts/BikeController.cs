@@ -6,11 +6,13 @@ public class BikeController : MonoBehaviour
     // public float rotationSpeed = 80f;
     public GameObject environment;
     public OVRCameraRig ovrCameraRig;
-    private Vector3 oldCameraPos;
     public GameObject trackingSpace;
+    private Vector3 oldCameraPos;
     private Vector3 oldTrackingSpacePos;
-    public Vector3 bike2CameraPositionOffset;
-    public Vector3 bike2CameraRotationOffset;
+    private Vector3 bike2CameraPositionOffset;
+    private Vector3 bike2CameraRotationOffset;
+    private bool isOldPos = false;
+    public float movementThreshold = 0.5f;
 
     // The relative speed of the environment moving in the opposite direction. 
     // If speedGain = 1, the environment moves the same speed as the bike,
@@ -32,16 +34,29 @@ public class BikeController : MonoBehaviour
         Debug.Log(oldTrackingSpacePos);
     }
 
+    private void Start(){
+        // Calculate the initial offset between the bike and the OVRCameraRig
+        bike2CameraPositionOffset = transform.position - ovrCameraRig.transform.position;
+        bike2CameraRotationOffset = transform.eulerAngles - ovrCameraRig.transform.eulerAngles;
+        oldCameraPos = ovrCameraRig.transform.position;
+        // Debug.Log(oldCameraPos);
+        oldTrackingSpacePos = trackingSpace.transform.position;
+        Debug.Log("@@@@");
+        Debug.Log(oldTrackingSpacePos);
+    }
+
     private void Update()
     {
         // Update the bike's position based on the calculated offset
         if (ovrCameraRig != null)
         {
-            if(ovrCameraRig.transform.position != oldCameraPos){
-                oldCameraPos = ovrCameraRig.transform.position;
-                // Debug.Log(oldCameraPos);
-            }
-            if(trackingSpace.transform.position != oldTrackingSpacePos){
+            // if(!isOldPos || !oldCameraPos || ovrCameraRig.transform.position != oldCameraPos){
+            //     isOldPos = true;
+            //     oldCameraPos = ovrCameraRig.transform.position;
+            //     Debug.Log(oldCameraPos);
+            // }
+            if(!isOldPos || oldTrackingSpacePos==new Vector3(0f,0f,0f) || Vector3.Distance(trackingSpace.transform.position, oldTrackingSpacePos) > movementThreshold){
+                isOldPos = true;
                 oldTrackingSpacePos = trackingSpace.transform.position;
                 Debug.Log("??????");
                 Debug.Log(oldTrackingSpacePos);
