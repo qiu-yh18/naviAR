@@ -57,11 +57,10 @@ public class BikeController : MonoBehaviour
                 Debug.Log("??????");
                 Debug.Log(oldTrackingSpacePos);
             }
-            // // Calculate the updated position offset
+            // bike follow camera
             // Vector3 updatedPositionOffset = trackingSpace.transform.TransformVector(bike2CameraPositionOffset);
             // transform.position = trackingSpace.transform.position + updatedPositionOffset;
 
-            // // Calculate the updated rotation offset
             // Quaternion updatedRotation = trackingSpace.transform.rotation * Quaternion.Euler(bike2CameraRotationOffset);
             // transform.rotation = updatedRotation;
         }
@@ -72,6 +71,7 @@ public class BikeController : MonoBehaviour
             if(angleGain > 0){
         //         environment.transform.RotateAround(transform.position, Vector3.up, -angleGain * horizontalInput * rotationSpeed * Time.deltaTime);
         //         environment.transform.Rotate(Vector3.up, -0.2f*angleGain * speedGain * speed * Time.deltaTime);
+                environment.transform.RotateAround(trackingSpace.transform.position, Vector3.up, -angleGain*movement.magnitude);
             }
             if(speedGain>0){
                 environment.transform.Translate(-speedGain * movement, Space.World);
