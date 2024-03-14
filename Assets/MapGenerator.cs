@@ -5,23 +5,27 @@ public class MapGenerator : MonoBehaviour
 {
     public GameObject[] blockPrefabs;
     public Transform player;
-    public float spawnDistance = 5f;
-    public float junctionSpacing = 20f; 
+    public float junctionSpacing = 10f; 
     private Vector3 lastPlayerPosition;
     private List<GameObject> activeBlocks = new List<GameObject>();
 
     void Start()
     {
+        player.position = new Vector3(5f,1f,-5f);
         lastPlayerPosition = player.position;
         SpawnInitialBlocks();
+        
+        Vector2Int currentJunctionIndex = CalculateJunctionIndex(player.position);
+        Debug.Log(currentJunctionIndex);
     }
 
     void Update()
     {
         // Check if the player has moved far enough to spawn new blocks
-        if (Vector3.Distance(player.position, lastPlayerPosition) >= spawnDistance)
+        if (Vector3.Distance(player.position, lastPlayerPosition) >= junctionSpacing)
         {
             Vector2Int currentJunctionIndex = CalculateJunctionIndex(player.position);
+            Debug.Log(currentJunctionIndex);
             Vector2Int lastJunctionIndex = CalculateJunctionIndex(lastPlayerPosition);
 
             if (currentJunctionIndex != lastJunctionIndex)
@@ -34,7 +38,7 @@ public class MapGenerator : MonoBehaviour
     
     void SpawnInitialBlocks()
     {
-        Vector2Int currentJunctionIndex = CalculateJunctionIndex(player.position);
+        Vector2Int currentJunctionIndex = CalculateJunctionIndex(new Vector3(0f,0f,0f));
 
         for (int i = -1; i <= 1; i++)
         {
@@ -42,16 +46,19 @@ public class MapGenerator : MonoBehaviour
             {
                 Vector3 spawnPosition = CalculatePositionFromJunctionIndex(currentJunctionIndex) + new Vector3(i * junctionSpacing, 0f, j * junctionSpacing);
                 SpawnBlockAtPosition(spawnPosition);
+                // Debug.Log("Initial spawn at position " + spawnPosition);
             }
         }
     }
     
     Vector2Int CalculateJunctionIndex(Vector3 position)
     {
-        return new Vector2Int(
+        Vector2Int idx = new Vector2Int(
             Mathf.FloorToInt(position.x / junctionSpacing),
-            Mathf.FloorToInt(position.z / junctionSpacing)
+            Mathf.CeilToInt(position.z / junctionSpacing)
         );
+        // Debug.Log(idx);
+        return idx;
     }
 
     Vector3 CalculatePositionFromJunctionIndex(Vector2Int junctionIndex)
@@ -72,6 +79,7 @@ public class MapGenerator : MonoBehaviour
             {
                 block.SetActive(false);
                 activeBlocks.Remove(block);
+                // Debug.Log("Remove block " + currentJunctionIndex + " at position " + blockPosition);
             }
         }
         // Activate blocks in the direction of movement
@@ -90,6 +98,7 @@ public class MapGenerator : MonoBehaviour
                 block.SetActive(true);
                 activeBlocks.Add(block);
             }
+            // Debug.Log("Add block " + currentJunctionIndex + " at position " + blockPosition);
         }
     }
 
@@ -109,6 +118,7 @@ public class MapGenerator : MonoBehaviour
     {
         // Instantiate a random block prefab at the specified position
         GameObject newBlock = Instantiate(blockPrefabs[Random.Range(0, blockPrefabs.Length)], position, Quaternion.identity);
+        newBlock.SetActive(true);
         activeBlocks.Add(newBlock);
         return newBlock;
     }
