@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class AbsoluteArrow : MonoBehaviour
 {
-    public Transform targetObject; // bike
+    public Transform targetObject; // bike/player
     public Transform destination;
     public float rotationSpeed = 5f;
     public float distanceFromBike = 3f; // distance from the bike's front
