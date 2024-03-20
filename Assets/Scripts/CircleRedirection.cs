@@ -18,12 +18,16 @@ public class CircleRedirection : MonoBehaviour
 
     void Update()
     {
-        // Calculate the displacement of the player since the last frame
-        Vector3 displacement = playerTransform.position - previousPlayerPosition;
+        // Transform player's position into environment's local coordinate system
+        Vector3 playerLocalPosition = transform.InverseTransformPoint(playerTransform.position);
+
+        // Calculate the displacement of the player since the last frame in environment's local coordinates
+        Vector3 displacement = playerLocalPosition - transform.InverseTransformPoint(previousPlayerPosition);
+        // Debug.Log(displacement);
 
         // Calculate the rotation angle based on the magnitude of the displacement vector
-        float rotationAngle = displacement.x * alpha;
-
+        float rotationAngle = displacement.magnitude * alpha;
+        
         // Apply rotation to the environment around the starting point
         transform.RotateAround(playerTransform.position, Vector3.up, -rotationAngle); // Negative rotation for environment
 
