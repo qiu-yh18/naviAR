@@ -14,7 +14,7 @@ public class CircleRedirection : MonoBehaviour
         previousPlayerPositionXZ = startPositionXZ;
     }
 
-    void FixedUpdate()
+    void Update()
     {
         Vector3 displacementXZ = new Vector3(playerTransform.position.x, 0, playerTransform.position.z) - previousPlayerPositionXZ;
         Vector3 toOrigin = circleOriginPosition - previousPlayerPositionXZ;
