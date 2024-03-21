@@ -3745,6 +3745,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   alpha: 5
   playerTransform: {fileID: 59069446}
+  circleOriginPosition: {x: 0, y: 0, z: 2}
 --- !u!1001 &2033551243
 PrefabInstance:
   m_ObjectHideFlags: 0
