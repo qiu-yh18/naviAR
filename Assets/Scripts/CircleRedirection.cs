@@ -6,14 +6,15 @@ public class CircleRedirection : MonoBehaviour
     public Transform playerTransform;
     private Vector3 previousPlayerPositionXZ;
     private Vector3 startPositionXZ;
-    public Transform origin;
+    public Transform originTransform;
     private Vector3 circleOriginPositionXZ;
-
+    private float radius;
     void Start()
     {
         startPositionXZ = new Vector3(playerTransform.position.x, 0, playerTransform.position.z);
         previousPlayerPositionXZ = startPositionXZ;
-        circleOriginPositionXZ = new Vector3(origin.position.x, 0, origin.position.z);
+        circleOriginPositionXZ = new Vector3(originTransform.position.x, 0, originTransform.position.z);
+        radius = Math.abs((startPositionXZ - circleOriginPositionXZ).magnitude);
     }
 
     void Update()
