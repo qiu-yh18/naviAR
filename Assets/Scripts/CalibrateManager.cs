@@ -1,3 +1,13 @@
+// Calibration
+
+// Step 1: Calibrate the center of the circle. 
+// User walks to the center and place the left controller on the floor.
+// Get the controller position (x,y,z).
+// Move the circle center object to (x,y,z).
+
+// Step 2: Calibrate the height of the environment.
+// Move the environment to (-,y,-).
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,8 +16,19 @@ public class CalibrateManager : MonoBehaviour
 {
     public GameObject controllerForCalibration;
     public GameObject controllerForTrigger;
-    public Transform environmentToCalibrate;
-    public Camera mainCamera;
+    public GameObject environmentToCalibrate;
+    public GameObject circleCenterToCalibrate;
+    // public Camera mainCamera;
+    private GameObject[] buildings;
+    private void Start()
+    {
+        buildings = GameObject.FindGameObjectsWithTag("Building");
+        foreach (GameObject building in buildings)
+        {
+            building.SetActive(false);
+        }
+        circleCenterToCalibrate.SetActive(false);
+    }
     private void Update()
     {
         RaycastHit hit;
@@ -18,10 +39,13 @@ public class CalibrateManager : MonoBehaviour
                 GameObject obj = hit.collider.gameObject;
                 if (obj.CompareTag("Button"))
                 {
-                    // Calibrate environment height
-                    Vector3 newPosition = environmentToCalibrate.position;
-                    newPosition.y = controllerForCalibration.transform.position.y;
-                    environmentToCalibrate.position = newPosition;
+                    // Get left controller position as circle center position
+                    Vector3 circleCenterPosition = controllerForCalibration.transform.position;
+                    circleCenterToCalibrate.transform.position = circleCenterPosition; 
+
+                    Vector3 newPosition = environmentToCalibrate.transform.position;
+                    newPosition.y = circleCenterPosition.y;
+                    environmentToCalibrate.transform.position = newPosition;
 
                     // // Calibrate environment rotation
                     // Vector3 forwardNoY = mainCamera.transform.forward;
@@ -30,6 +54,11 @@ public class CalibrateManager : MonoBehaviour
                     // environmentToCalibrate.rotation = targetRotation;
 
                     obj.SetActive(false);
+                    circleCenterToCalibrate.SetActive(true);
+                    foreach (GameObject building in buildings)
+                    {
+                        building.SetActive(true);
+                    }
                 }
             }
         }
