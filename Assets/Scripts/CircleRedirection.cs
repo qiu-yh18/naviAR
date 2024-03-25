@@ -7,7 +7,7 @@ public class CircleRedirection : MonoBehaviour
     private Vector3 currentPlayerPositionXZ;
     private Vector3 previousPlayerPositionXZ;
     private Vector3 startPositionXZ;
-    private Vector3 startRotationXZ;
+    // private Vector3 startRotationXZ;
     public Transform originTransform;
     private Vector3 circleOriginPositionXZ;
     private float radius;
@@ -15,16 +15,16 @@ public class CircleRedirection : MonoBehaviour
     private float previousXOnLine;
     void Start()
     {
-        startPositionXZ = new Vector3(playerTransform.position.x, 0, playerTransform.position.z);
+        startPositionXZ = new Vector3(playerTransform.position.x, 0f, playerTransform.position.z);
         previousPlayerPositionXZ = startPositionXZ;
-        circleOriginPositionXZ = new Vector3(originTransform.position.x, 0, originTransform.position.z);
+        circleOriginPositionXZ = new Vector3(originTransform.position.x, 0f, originTransform.position.z);
         radius = Mathf.Abs((startPositionXZ - circleOriginPositionXZ).magnitude);
         previousXOnLine = 0f;
     }
 
     void Update()
     {
-        currentPlayerPositionXZ = new Vector3(playerTransform.position.x, 0, playerTransform.position.z);
+        currentPlayerPositionXZ = new Vector3(playerTransform.position.x, 0f, playerTransform.position.z);
         float theta = Mathf.Atan2(currentPlayerPositionXZ.z - circleOriginPositionXZ.z, currentPlayerPositionXZ.x - circleOriginPositionXZ.x);
         xOnLine = radius * Mathf.Cos(theta);
         float displacementX = xOnLine - previousXOnLine;

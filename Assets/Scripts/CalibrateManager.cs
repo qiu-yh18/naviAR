@@ -6,7 +6,7 @@
 // Move the circle center object to (x,y,z).
 
 // Step 2: Calibrate the height of the environment.
-// Move the environment to (-,y,-).
+// Move the environment to (camera.x,circleCenter.y,camera.z).
 
 using System.Collections;
 using System.Collections.Generic;
@@ -14,12 +14,13 @@ using UnityEngine;
 
 public class CalibrateManager : MonoBehaviour
 {
-    public GameObject controllerForCalibration;
-    public GameObject controllerForTrigger;
+    public GameObject controllerForCalibration; //  left
+    public GameObject controllerForTrigger; // right
     public GameObject environmentToCalibrate;
     public GameObject circleCenterToCalibrate;
-    // public Camera mainCamera;
+    public Camera mainCamera;
     private GameObject[] buildings;
+    private bool calibrationStarted = false;
     private void Start()
     {
         buildings = GameObject.FindGameObjectsWithTag("Building");
@@ -31,6 +32,10 @@ public class CalibrateManager : MonoBehaviour
     }
     private void Update()
     {
+        // The circle center follows the left controller. Fix the position when calibration is over.
+        if(!calibrationStarted){
+            circleCenterToCalibrate.transform.position = controllerForCalibration.transform.position;
+        }
         RaycastHit hit;
         if (OVRInput.Get(OVRInput.Axis1D.SecondaryIndexTrigger) > 0f)
         {
@@ -40,11 +45,13 @@ public class CalibrateManager : MonoBehaviour
                 if (obj.CompareTag("Button"))
                 {
                     // Get left controller position as circle center position
-                    Vector3 circleCenterPosition = controllerForCalibration.transform.position;
-                    circleCenterToCalibrate.transform.position = circleCenterPosition; 
+                    // Vector3 circleCenterPosition = controllerForCalibration.transform.position;
+                    // circleCenterToCalibrate.transform.position = new Vector3(circleCenterPosition.x, circleCenterPosition.y+5f, circleCenterPosition.z); 
 
-                    Vector3 newPosition = environmentToCalibrate.transform.position;
-                    newPosition.y = circleCenterPosition.y;
+                    calibrationStarted = true;
+
+                    Vector3 newPosition = mainCamera.transform.position;
+                    newPosition.y = circleCenterToCalibrate.transform.position.y;
                     environmentToCalibrate.transform.position = newPosition;
 
                     // // Calibrate environment rotation
