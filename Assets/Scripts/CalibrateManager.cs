@@ -14,7 +14,7 @@ using UnityEngine;
 
 public class CalibrateManager : MonoBehaviour
 {
-    public GameObject controllerForCalibration; //  left
+    public GameObject controllerForCalibration; // left
     public GameObject controllerForTrigger; // right
     public GameObject environmentToCalibrate;
     public GameObject circleCenterToCalibrate;
@@ -32,8 +32,8 @@ public class CalibrateManager : MonoBehaviour
     }
     private void Update()
     {
-        // The circle center follows the left controller. Fix the position when calibration is over.
-        if(!calibrationStarted){
+        // The circle center follows the left controller. Fix the position when environment calibration starts.
+        if(!calibrationStarted && controllerForCalibration){
             circleCenterToCalibrate.transform.position = controllerForCalibration.transform.position;
         }
         RaycastHit hit;
@@ -54,11 +54,13 @@ public class CalibrateManager : MonoBehaviour
                     newPosition.y = circleCenterToCalibrate.transform.position.y;
                     environmentToCalibrate.transform.position = newPosition;
 
-                    // // Calibrate environment rotation
-                    // Vector3 forwardNoY = mainCamera.transform.forward;
-                    // forwardNoY.y = 0f;
-                    // Quaternion targetRotation = Quaternion.LookRotation(forwardNoY);
-                    // environmentToCalibrate.rotation = targetRotation;
+                    // // Calculate the rotation to align the x-axis with the camera's forward direction
+                    // Vector3 targetDirection = mainCamera.transform.forward;
+                    // targetDirection.y = 0f; // Ignore vertical component
+                    // Quaternion targetRotation = Quaternion.LookRotation(targetDirection, Vector3.up);
+
+                    // // Apply the rotation to the environment
+                    // environmentToCalibrate.transform.rotation = targetRotation;
 
                     obj.SetActive(false);
                     circleCenterToCalibrate.SetActive(true);
