@@ -4,7 +4,7 @@ public class CircleRedirection : MonoBehaviour
 {
     public float alpha = 3.0f;
     public CalibrateManager calibrationManager;
-    public Transform playerTransform; // right controller, will ignore y position
+    public Transform playerTransform; // camera, will ignore y position
     private Vector3 currentPlayerPositionXZ;
     private Vector3 previousPlayerPositionXZ;
     private Vector3 startPositionXZ;
