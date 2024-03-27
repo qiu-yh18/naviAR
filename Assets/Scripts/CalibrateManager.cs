@@ -56,7 +56,7 @@ public class CalibrateManager : MonoBehaviour
                         // Stage 1: walk to the center, place left controller on the ground, click set circle center
                         if (!isCircleCenterSet)
                         {
-                            circleCenterToCalibrate.transform.position = controllerForCalibration.transform.position;
+                            circleCenterToCalibrate.transform.position = new Vector3(controllerForCalibration.transform.position.x, 0f, controllerForCalibration.transform.position.z);
                             circleCenterToCalibrate.SetActive(true);
                             isCircleCenterSet = true;
                             buttonSetCircleCenter.SetActive(false);
