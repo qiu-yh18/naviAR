@@ -1,13 +1,3 @@
-// Calibration
-
-// Step 1: Calibrate the center of the circle. 
-// User walks to the center and place the left controller on the floor.
-// Get the controller position (x,y,z).
-// Move the circle center object to (x,y,z).
-
-// Step 2: Calibrate the height of the environment.
-// Move the environment to (camera.x,circleCenter.y,camera.z).
-
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -18,9 +8,16 @@ public class CalibrateManager : MonoBehaviour
     public GameObject controllerForTrigger; // right
     public GameObject environmentToCalibrate;
     public GameObject circleCenterToCalibrate;
+    public GameObject buttonSetCircleCenter;
+    public GameObject buttonStart;
     public Camera mainCamera;
     private GameObject[] buildings;
-    private bool calibrationStarted = false;
+    private bool isCircleCenterSet = false;
+    public bool isStartButtonActivated = false;
+    private bool isCooldownActive = false; 
+    private float cooldownDuration = 1.5f;
+    private float cooldownTimer = 0f;
+
     private void Start()
     {
         buildings = GameObject.FindGameObjectsWithTag("Building");
@@ -29,13 +26,22 @@ public class CalibrateManager : MonoBehaviour
             building.SetActive(false);
         }
         circleCenterToCalibrate.SetActive(false);
+        buttonSetCircleCenter.SetActive(true);
+        buttonStart.SetActive(false);
     }
+
     private void Update()
     {
-        // The circle center follows the left controller. Fix the position when environment calibration starts.
-        if(!calibrationStarted && controllerForCalibration){
-            circleCenterToCalibrate.transform.position = controllerForCalibration.transform.position;
+        if (isCooldownActive)
+        {
+            cooldownTimer += Time.deltaTime;
+            if (cooldownTimer >= cooldownDuration)
+            {
+                isCooldownActive = false;
+                cooldownTimer = 0f;
+            }
         }
+
         RaycastHit hit;
         if (OVRInput.Get(OVRInput.Axis1D.SecondaryIndexTrigger) > 0f)
         {
@@ -44,29 +50,41 @@ public class CalibrateManager : MonoBehaviour
                 GameObject obj = hit.collider.gameObject;
                 if (obj.CompareTag("Button"))
                 {
-                    // Get left controller position as circle center position
-                    // Vector3 circleCenterPosition = controllerForCalibration.transform.position;
-                    // circleCenterToCalibrate.transform.position = new Vector3(circleCenterPosition.x, circleCenterPosition.y+5f, circleCenterPosition.z); 
-
-                    calibrationStarted = true;
-
-                    Vector3 newPosition = mainCamera.transform.position;
-                    newPosition.y = circleCenterToCalibrate.transform.position.y;
-                    environmentToCalibrate.transform.position = newPosition;
-
-                    // // Calculate the rotation to align the x-axis with the camera's forward direction
-                    // Vector3 targetDirection = mainCamera.transform.forward;
-                    // targetDirection.y = 0f; // Ignore vertical component
-                    // Quaternion targetRotation = Quaternion.LookRotation(targetDirection, Vector3.up);
-
-                    // // Apply the rotation to the environment
-                    // environmentToCalibrate.transform.rotation = targetRotation;
-
-                    obj.SetActive(false);
-                    circleCenterToCalibrate.SetActive(true);
-                    foreach (GameObject building in buildings)
+                    // Only proceed if the cooldown is not active
+                    if (!isCooldownActive)
                     {
-                        building.SetActive(true);
+                        // Stage 1: walk to the center, place left controller on the ground, click set circle center
+                        if (!isCircleCenterSet)
+                        {
+                            circleCenterToCalibrate.transform.position = controllerForCalibration.transform.position;
+                            circleCenterToCalibrate.SetActive(true);
+                            isCircleCenterSet = true;
+                            buttonSetCircleCenter.SetActive(false);
+                            buttonStart.SetActive(true);
+                            isCooldownActive = true;
+                        }
+                        // Stage 2: pick up left controller, walk to starting point, click start game
+                        else if (!isStartButtonActivated)
+                        {
+                            // Calibrate environment position
+                            Vector3 newPosition = mainCamera.transform.position;
+                            newPosition.y = circleCenterToCalibrate.transform.position.y;
+                            environmentToCalibrate.transform.position = newPosition;
+                            // Calibrate environment rotation
+                            // Vector3 targetDirection = mainCamera.transform.forward;
+                            // targetDirection.y = 0f;
+                            // Quaternion targetRotation = Quaternion.LookRotation(targetDirection, Vector3.up);
+                            // environmentToCalibrate.transform.rotation = targetRotation;
+                            // Enable buildings
+                            foreach (GameObject building in buildings)
+                            {
+                                building.SetActive(true);
+                            }
+                            buttonSetCircleCenter.SetActive(false);
+                            buttonStart.SetActive(false);
+                            isStartButtonActivated = true;
+                            isCooldownActive = true;
+                        }
                     }
                 }
             }
