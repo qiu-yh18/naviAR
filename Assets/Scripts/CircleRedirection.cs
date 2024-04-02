@@ -31,7 +31,7 @@ public class CircleRedirection : MonoBehaviour
         }
         else
         {
-            isRedirect = false; // Reset redirection when calibration is not active
+            isRedirect = false;
         }
     }
 
