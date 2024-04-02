@@ -94,7 +94,7 @@ GameObject:
   - component: {fileID: 158792178944085014}
   - component: {fileID: 158792178893075717}
   m_Layer: 0
-  m_Name: Absolute Arrow
+  m_Name: AbsoluteArrow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
