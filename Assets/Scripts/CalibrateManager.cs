@@ -70,27 +70,12 @@ public class CalibrateManager : MonoBehaviour
                             Vector3 newPosition = mainCamera.transform.position;
                             newPosition.y = circleCenterToCalibrate.transform.position.y;
                             environmentToCalibrate.transform.position = newPosition;
+                            
                             // Calibrate environment rotation
-                            // Vector3 targetDirection = mainCamera.transform.forward;
-                            // targetDirection.y = 0f;
-                            // Quaternion targetRotation = Quaternion.LookRotation(targetDirection, Vector3.up);
-                            // environmentToCalibrate.transform.rotation = targetRotation;
-
-                            // Directly set environment rotation to main camera rotation
-                            // environmentToCalibrate.transform.rotation = mainCamera.transform.rotation;
-
-                            // Get the Euler angles of the main camera's rotation
-                            // Vector3 cameraEulerAngles = mainCamera.transform.rotation.eulerAngles;
-
-                            // // Zero out the y-component
-                            // cameraEulerAngles.y = 0f;
-
-                            // // Construct a new Quaternion with the modified Euler angles
-                            // Quaternion newXZRotation = Quaternion.Euler(cameraEulerAngles);
-
-                            // // Apply the rotation to the environment
-                            // environmentToCalibrate.transform.rotation = newXZRotation;
-
+                            Vector3 targetDirection = mainCamera.transform.forward;
+                            targetDirection.y = 0f;
+                            Quaternion targetRotation = Quaternion.LookRotation(targetDirection, Vector3.up);
+                            environmentToCalibrate.transform.rotation = targetRotation;
 
                             // Enable buildings
                             foreach (GameObject building in buildings)
