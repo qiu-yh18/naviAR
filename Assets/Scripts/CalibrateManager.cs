@@ -69,8 +69,9 @@ public class CalibrateManager : MonoBehaviour
                             // Calibrate environment position
                             Vector3 newPosition = mainCamera.transform.position;
                             newPosition.y = circleCenterToCalibrate.transform.position.y;
+                            // newPosition.x -= 5f;
                             environmentToCalibrate.transform.position = newPosition;
-                            
+
                             // Calibrate environment rotation
                             Vector3 targetDirection = mainCamera.transform.forward;
                             targetDirection.y = 0f;
