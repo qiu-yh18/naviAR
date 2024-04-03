@@ -4267,7 +4267,7 @@ MonoBehaviour:
   calibrationManager: {fileID: 461179326}
   playerTransform: {fileID: 1852038586}
   circleCenterTransform: {fileID: 263637485}
-  minDistanceThreshold: 3
+  minDistanceThreshold: 1
 --- !u!1 &1998448315
 GameObject:
   m_ObjectHideFlags: 0
