@@ -8,7 +8,6 @@ public class CircleRedirection : MonoBehaviour
     public Transform circleCenterTransform;
     public float minDistanceThreshold = 0.1f; // Minimum distance threshold from the circle center
     private Vector3 currentPlayerPositionXZ;
-    private Vector3 previousPlayerPositionXZ;
     private Vector3 startPositionXZ;
     private Vector3 circleCenterPositionXZ;
     private float radius;
@@ -38,7 +37,6 @@ public class CircleRedirection : MonoBehaviour
     void InitializeRedirection()
     {
         startPositionXZ = new Vector3(playerTransform.position.x, 0f, playerTransform.position.z);
-        previousPlayerPositionXZ = startPositionXZ;
         currentPlayerPositionXZ = startPositionXZ;
         circleCenterPositionXZ = new Vector3(circleCenterTransform.position.x, 0f, circleCenterTransform.position.z);
         radius = Mathf.Abs((startPositionXZ - circleCenterPositionXZ).magnitude);
@@ -52,15 +50,14 @@ public class CircleRedirection : MonoBehaviour
         float distanceToCenter = Vector3.Distance(currentPlayerPositionXZ, circleCenterPositionXZ);
 
         // Check if the player is too close to the circle center
+        float theta = Mathf.Atan2(currentPlayerPositionXZ.z - circleCenterPositionXZ.z, currentPlayerPositionXZ.x - circleCenterPositionXZ.x);
+        xOnLine = radius * Mathf.Cos(theta);
         if (distanceToCenter > minDistanceThreshold)
         {
-            float theta = Mathf.Atan2(currentPlayerPositionXZ.z - circleCenterPositionXZ.z, currentPlayerPositionXZ.x - circleCenterPositionXZ.x);
-            xOnLine = radius * Mathf.Cos(theta);
             float displacementX = xOnLine - previousXOnLine;
             float rotationAngle = Mathf.Atan2(displacementX, radius) * Mathf.Rad2Deg * alpha * Mathf.Sign(theta);
             transform.RotateAround(playerTransform.position, Vector3.up, rotationAngle);
-            previousPlayerPositionXZ = currentPlayerPositionXZ;
-            previousXOnLine = xOnLine;
         }
+        previousXOnLine = xOnLine;
     }
 }
