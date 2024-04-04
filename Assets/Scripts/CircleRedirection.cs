@@ -6,7 +6,7 @@ public class CircleRedirection : MonoBehaviour
     public CalibrateManager calibrationManager;
     public Transform playerTransform; // camera, will ignore y position
     public Transform circleCenterTransform;
-    public float minDistanceThreshold = 0.1f; // Minimum distance threshold from the circle center
+    // public float minDistanceThreshold = 0.1f; // Minimum distance threshold from the circle center
     private Vector3 currentPlayerPositionXZ;
     private Vector3 previousPlayerPositionXZ;
     private Vector3 startPositionXZ;
