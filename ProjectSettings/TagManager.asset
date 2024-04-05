@@ -6,6 +6,10 @@ TagManager:
   tags:
   - Button
   - Building
+  - Floor
+  - Coin
+  - Highlight
+  - Beacon
   layers:
   - Default
   - TransparentFX
