@@ -17,6 +17,7 @@ public class CalibrateManager : MonoBehaviour
     private bool isCooldownActive = false; 
     private float cooldownDuration = 1.5f;
     private float cooldownTimer = 0f;
+    private Quaternion initialRotation;
 
     private void Start()
     {
@@ -28,6 +29,9 @@ public class CalibrateManager : MonoBehaviour
         circleCenterToCalibrate.SetActive(false);
         buttonSetCircleCenter.SetActive(true);
         buttonStart.SetActive(false);
+
+        // Record the initial rotation of the environment relative to the user
+        initialRotation = Quaternion.Inverse(mainCamera.transform.rotation) * environmentToCalibrate.transform.rotation;
     }
 
     private void Update()
@@ -68,13 +72,15 @@ public class CalibrateManager : MonoBehaviour
                         {
                             // Calibrate environment position
                             Vector3 newPosition = mainCamera.transform.position;
-                            newPosition.y = circleCenterToCalibrate.transform.position.y;
+                            newPosition.y = circleCenterToCalibrate.transform.position.y-1f;
                             environmentToCalibrate.transform.position = newPosition;
 
                             // Calibrate environment rotation
-                            Vector3 targetDirection = mainCamera.transform.forward;
-                            targetDirection.y = 0f;
-                            Quaternion targetRotation = Quaternion.LookRotation(targetDirection, Vector3.up);
+                            // Quaternion targetRotation = mainCamera.transform.rotation * initialRotation;
+                            Quaternion targetRotation = Quaternion.LookRotation(
+                                new Vector3(mainCamera.transform.forward.x, 0f, mainCamera.transform.forward.z), 
+                                Vector3.up
+                            ) * initialRotation;
                             environmentToCalibrate.transform.rotation = targetRotation;
 
                             // Enable buildings
