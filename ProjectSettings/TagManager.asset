@@ -10,6 +10,9 @@ TagManager:
   - Coin
   - Highlight
   - Beacon
+  - HighlightStraight
+  - HighlightLeft
+  - HighlightRight
   layers:
   - Default
   - TransparentFX
