@@ -282,6 +282,8 @@ PrefabInstance:
     - target: {fileID: 5143009954114305051, guid: 33b926d685abf5c43a6e41ea9c53bcfc, type: 3}
       propertyPath: m_TagString
       value: HighlightStraight
+      objectReference: {fileID: 0}
+    - target: {fileID: 7024840601686641548, guid: 33b926d685abf5c43a6e41ea9c53bcfc, type: 3}
       propertyPath: m_LocalPosition.x
       value: 18
       objectReference: {fileID: 0}
