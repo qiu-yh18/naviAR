@@ -44,7 +44,8 @@ public class CircleRedirection : MonoBehaviour
         previousPlayerPositionXZ = startPositionXZ;
         circleCenterPositionXZ = new Vector3(circleCenterTransform.position.x, 0f, circleCenterTransform.position.z);
         radius = Mathf.Abs((startPositionXZ - circleCenterPositionXZ).magnitude);
-        previousXOnLine = 0f;
+        float theta = Mathf.Atan2(currentPlayerPositionXZ.z - circleCenterPositionXZ.z, currentPlayerPositionXZ.x - circleCenterPositionXZ.x);
+        previousXOnLine = radius * Mathf.Cos(theta);
         isRedirect = true;
     }
 

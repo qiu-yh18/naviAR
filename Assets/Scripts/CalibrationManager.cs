@@ -24,7 +24,7 @@ public class CalibrationManager : MonoBehaviour
         buildings = GameObject.FindGameObjectsWithTag("Building");
         foreach (GameObject building in buildings)
         {
-            // building.SetActive(false);
+            building.SetActive(false);
         }
         circleCenterToCalibrate.SetActive(false);
         buttonSetCircleCenter.SetActive(true);
