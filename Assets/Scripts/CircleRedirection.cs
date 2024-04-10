@@ -57,7 +57,7 @@ public class CircleRedirection : MonoBehaviour
         float theta = Mathf.Atan2(currentPlayerPositionXZ.z - circleCenterPositionXZ.z, currentPlayerPositionXZ.x - circleCenterPositionXZ.x);
         xOnLine = radius * Mathf.Cos(theta);
         float displacementX = xOnLine - previousXOnLine;
-        float rotationAngle = Mathf.Atan2(displacementX, radius) * Mathf.Rad2Deg * alpha * Mathf.Sign(theta) * normalizedDistance;
+        float rotationAngle = Mathf.Atan2(displacementX, radius) * Mathf.Rad2Deg * alpha * Mathf.Sign(theta) /** normalizedDistance*/;
         transform.RotateAround(playerTransform.position, Vector3.up, rotationAngle);
         previousXOnLine = xOnLine;
         previousPlayerPositionXZ = currentPlayerPositionXZ;

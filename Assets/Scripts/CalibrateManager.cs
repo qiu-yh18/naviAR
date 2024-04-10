@@ -31,7 +31,8 @@ public class CalibrateManager : MonoBehaviour
         buttonStart.SetActive(false);
 
         // Record the initial rotation of the environment relative to the user
-        initialRotation = Quaternion.Inverse(mainCamera.transform.rotation) * environmentToCalibrate.transform.rotation;
+        // initialRotation = Quaternion.Inverse(mainCamera.transform.rotation) * environmentToCalibrate.transform.rotation;
+        initialRotation = Quaternion.identity;
     }
 
     private void Update()
@@ -72,11 +73,10 @@ public class CalibrateManager : MonoBehaviour
                         {
                             // Calibrate environment position
                             Vector3 newPosition = mainCamera.transform.position;
-                            newPosition.y = circleCenterToCalibrate.transform.position.y - 1f;
+                            newPosition.y = circleCenterToCalibrate.transform.position.y;
                             environmentToCalibrate.transform.position = newPosition;
 
                             // Calibrate environment rotation
-                            // Quaternion targetRotation = mainCamera.transform.rotation * initialRotation;
                             Quaternion targetRotation = Quaternion.LookRotation(
                                 new Vector3(mainCamera.transform.forward.x, 0f, mainCamera.transform.forward.z), 
                                 Vector3.up
