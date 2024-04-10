@@ -16,6 +16,7 @@ public class CircleRedirection : MonoBehaviour
     private float xOnLine;
     private float previousXOnLine;
     private bool isRedirect = false;
+    private float rotationAngle = 0f;
 
     void Update()
     {
@@ -57,8 +58,13 @@ public class CircleRedirection : MonoBehaviour
         float theta = Mathf.Atan2(currentPlayerPositionXZ.z - circleCenterPositionXZ.z, currentPlayerPositionXZ.x - circleCenterPositionXZ.x);
         xOnLine = radius * Mathf.Cos(theta);
         float displacementX = xOnLine - previousXOnLine;
-        float rotationAngle = Mathf.Atan2(displacementX, radius) * Mathf.Rad2Deg * alpha * Mathf.Sign(theta) /** normalizedDistance*/;
-        transform.RotateAround(playerTransform.position, Vector3.up, rotationAngle);
+        if(normalizedDistance > 0.3){
+            rotationAngle = Mathf.Atan2(displacementX, radius) * Mathf.Rad2Deg * alpha * Mathf.Sign(theta) /** normalizedDistance*/;
+        }
+        else{ // disable rotation when the user is too close to the center.
+            rotationAngle = 0f;
+        }
+        transform.RotateAround(currentPlayerPositionXZ, Vector3.up, rotationAngle);
         previousXOnLine = xOnLine;
         previousPlayerPositionXZ = currentPlayerPositionXZ;
     }
