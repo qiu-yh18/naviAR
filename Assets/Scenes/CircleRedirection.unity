@@ -3124,7 +3124,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &578549944
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7332,7 +7332,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 1852038586}
-  destination: {fileID: 837632201}
+  destination: {fileID: 7681402684794417866}
   signArrow: {fileID: 652328320}
   calibrationManager: {fileID: 461179326}
 --- !u!1001 &1469714759
@@ -8970,7 +8970,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18af756fcc8d59142bec706e2a0733cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  alpha: 1.3
+  alpha: 0
   beta: 0
   calibrationManager: {fileID: 461179326}
   playerTransform: {fileID: 1852038586}

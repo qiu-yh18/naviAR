@@ -24,7 +24,7 @@ public class CalibrationManager : MonoBehaviour
         buildings = GameObject.FindGameObjectsWithTag("Building");
         foreach (GameObject building in buildings)
         {
-            building.SetActive(false);
+            // building.SetActive(false);
         }
         circleCenterToCalibrate.SetActive(false);
         buttonSetCircleCenter.SetActive(true);
@@ -58,22 +58,21 @@ public class CalibrationManager : MonoBehaviour
                     // Only proceed if the cooldown is not active
                     if (!isCooldownActive)
                     {
-                        // Stage 1: walk to the center, place left controller on the ground, click set circle center
+                        // Calibration Stage 1: 
+                        // Experimenter walks to the center, place left controller on the ground, click set circle center with right controller.
                         if (!isCircleCenterSet)
                         {
-                            circleCenterToCalibrate.transform.position = controllerForCalibration.transform.position;
-                            circleCenterToCalibrate.SetActive(true);
+                            // circleCenterToCalibrate.transform.position = controllerForCalibration.transform.position;
+                            // circleCenterToCalibrate.SetActive(true);
                             isCircleCenterSet = true;
+                            isCooldownActive = true;
                             buttonSetCircleCenter.SetActive(false);
                             buttonStart.SetActive(true);
-                            isCooldownActive = true;
-                        }
-                        // Stage 2: pick up left controller, walk to starting point, click start game
-                        else if (!isStartButtonActivated)
-                        {
+                            
                             // Calibrate environment position
                             Vector3 newPosition = mainCamera.transform.position;
-                            newPosition.y = circleCenterToCalibrate.transform.position.y;
+                            newPosition.y = controllerForCalibration.transform.position.y;
+                            newPosition.z += 3f;
                             environmentToCalibrate.transform.position = newPosition;
 
                             // Calibrate environment rotation
@@ -88,10 +87,14 @@ public class CalibrationManager : MonoBehaviour
                             {
                                 building.SetActive(true);
                             }
-                            buttonSetCircleCenter.SetActive(false);
+                        }
+                        // Calibration Stage 2: 
+                        // Experimenter picks up left controller, walks to starting point, gives headset and right controller to participant. 
+                        // Participant clicks start game, give the controller back to experimenter.
+                        else if (!isStartButtonActivated)
+                        {
                             buttonStart.SetActive(false);
                             isStartButtonActivated = true;
-                            isCooldownActive = true;
                         }
                     }
                 }
