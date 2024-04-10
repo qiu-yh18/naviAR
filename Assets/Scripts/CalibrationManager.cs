@@ -31,8 +31,8 @@ public class CalibrationManager : MonoBehaviour
         buttonStart.SetActive(false);
 
         // Record the initial rotation of the environment relative to the user
-        // initialRotation = Quaternion.Inverse(mainCamera.transform.rotation) * environmentToCalibrate.transform.rotation;
-        initialRotation = Quaternion.identity;
+        initialRotation = Quaternion.Inverse(mainCamera.transform.rotation) * environmentToCalibrate.transform.rotation;
+        // initialRotation = Quaternion.identity;
     }
 
     private void Update()
@@ -62,18 +62,12 @@ public class CalibrationManager : MonoBehaviour
                         // Experimenter walks to the center, place left controller on the ground, click set circle center with right controller.
                         if (!isCircleCenterSet)
                         {
-                            // circleCenterToCalibrate.transform.position = controllerForCalibration.transform.position;
+                            circleCenterToCalibrate.transform.position = controllerForCalibration.transform.position;
                             // circleCenterToCalibrate.SetActive(true);
                             isCircleCenterSet = true;
                             isCooldownActive = true;
                             buttonSetCircleCenter.SetActive(false);
                             buttonStart.SetActive(true);
-                            
-                            // Calibrate environment position
-                            Vector3 newPosition = mainCamera.transform.position;
-                            newPosition.y = controllerForCalibration.transform.position.y;
-                            newPosition.z += 3f;
-                            environmentToCalibrate.transform.position = newPosition;
 
                             // Calibrate environment rotation
                             Quaternion targetRotation = Quaternion.LookRotation(
@@ -81,6 +75,12 @@ public class CalibrationManager : MonoBehaviour
                                 Vector3.up
                             ) * initialRotation;
                             environmentToCalibrate.transform.rotation = targetRotation;
+                            
+                            // Calibrate environment position
+                            Vector3 newPosition = mainCamera.transform.position;
+                            newPosition.y = controllerForCalibration.transform.position.y;
+                            newPosition.z -= 3f; //TODO: Adjust this value!
+                            environmentToCalibrate.transform.position = newPosition;
 
                             // Enable buildings
                             foreach (GameObject building in buildings)
