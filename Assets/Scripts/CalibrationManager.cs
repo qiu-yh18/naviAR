@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CalibrateManager : MonoBehaviour
+public class CalibrationManager : MonoBehaviour
 {
     public GameObject controllerForCalibration; // left
     public GameObject controllerForTrigger; // right

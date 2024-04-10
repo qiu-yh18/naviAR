@@ -4,7 +4,7 @@ public class CircleRedirection : MonoBehaviour
 {
     public float alpha = 3.0f; // Rotation redirection coefficient
     public float beta = 0.5f; // Position redirection coefficient
-    public CalibrateManager calibrationManager;
+    public CalibrationManager calibrationManager;
     public Transform playerTransform; // camera, will ignore y position
     public Transform circleCenterTransform;
     // public float minDistanceThreshold = 0.1f; // Minimum distance threshold from the circle center
