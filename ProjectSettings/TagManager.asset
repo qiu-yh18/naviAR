@@ -13,6 +13,7 @@ TagManager:
   - HighlightStraight
   - HighlightLeft
   - HighlightRight
+  - StartPoint
   layers:
   - Default
   - TransparentFX
