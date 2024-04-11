@@ -2,8 +2,9 @@ using UnityEngine;
 
 public class CircleRedirection : MonoBehaviour
 {
-    public float alpha = 3.0f; // Rotation redirection coefficient
+    public float alpha = 1.3f; // Rotation redirection coefficient
     public float beta = 0.5f; // Position redirection coefficient
+    private float radius = 12f;
     public CalibrationManager calibrationManager;
     public Transform playerTransform; // camera, will ignore y position
     public Transform circleCenterTransform;
@@ -12,11 +13,14 @@ public class CircleRedirection : MonoBehaviour
     private Vector3 previousPlayerPositionXZ;
     private Vector3 startPositionXZ;
     private Vector3 circleCenterPositionXZ;
-    private float radius;
     private float xOnLine;
     private float previousXOnLine;
     private bool isRedirect = false;
     private float rotationAngle = 0f;
+
+    void Start(){
+        radius = calibrationManager.radius;
+    }
 
     void Update()
     {
@@ -43,7 +47,7 @@ public class CircleRedirection : MonoBehaviour
         currentPlayerPositionXZ = startPositionXZ;
         previousPlayerPositionXZ = startPositionXZ;
         circleCenterPositionXZ = new Vector3(circleCenterTransform.position.x, 0f, circleCenterTransform.position.z);
-        radius = Mathf.Abs((startPositionXZ - circleCenterPositionXZ).magnitude);
+        // radius = Mathf.Abs((startPositionXZ - circleCenterPositionXZ).magnitude);
         float theta = Mathf.Atan2(currentPlayerPositionXZ.z - circleCenterPositionXZ.z, currentPlayerPositionXZ.x - circleCenterPositionXZ.x);
         previousXOnLine = radius * Mathf.Cos(theta);
         isRedirect = true;

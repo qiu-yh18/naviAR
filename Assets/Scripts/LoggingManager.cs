@@ -20,6 +20,7 @@ public class LoggingManager : MonoBehaviour
     private float duration = 0f;
     private float distance = 0f;
     private int countHitWall = 0;
+    private float durationOffTrack = 0f;
     private string ROOT;
     private string subjectname = "2024-04-11_13:00:00";
     private string savepath = "";
@@ -42,13 +43,15 @@ public class LoggingManager : MonoBehaviour
         if(!isFileWritten && !isStart && calibrationManager.isStartButtonActivated){
             isStart = true;
             startTime = Time.time;
-            signArrow.SetActive(false);
         }
         playerToDest = player.position - destination.position;
         Vector3 playerToDestXZ = new Vector3(playerToDest.x, 0f, playerToDest.z);
         if(isStart){
             distance += new Vector3(player.position.x-previousPlayerPosition.x, 0f, player.position.z-previousPlayerPosition.z).magnitude;
             previousPlayerPosition = player.position;
+            // if(){
+
+            // }
             if(playerToDestXZ.magnitude < destinationThreshold){
                 isStart = false;
                 endTime = Time.time;
@@ -56,7 +59,7 @@ public class LoggingManager : MonoBehaviour
                 string line = "1," + duration.ToString("0.000") + "," + distance.ToString("0.000") + "," + countHitWall.ToString();
                 writer.WriteLine(line);
                 writer.Close();
-                signArrow.SetActive(true);
+                signArrow.SetActive(false);
                 isFileWritten = true;
             }
         }

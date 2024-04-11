@@ -11,6 +11,7 @@ public class CalibrationManager : MonoBehaviour
     public GameObject buttonSetCircleCenter;
     public GameObject buttonStart;
     public Camera mainCamera;
+    public float radius = 12f;
     private GameObject[] buildings;
     private bool isCircleCenterSet = false;
     public bool isStartButtonActivated = false;
@@ -63,7 +64,7 @@ public class CalibrationManager : MonoBehaviour
                         if (!isCircleCenterSet)
                         {
                             circleCenterToCalibrate.transform.position = controllerForCalibration.transform.position;
-                            // circleCenterToCalibrate.SetActive(true);
+                            circleCenterToCalibrate.SetActive(true);
                             isCircleCenterSet = true;
                             isCooldownActive = true;
                             buttonSetCircleCenter.SetActive(false);
@@ -79,7 +80,7 @@ public class CalibrationManager : MonoBehaviour
                             // Calibrate environment position
                             Vector3 newPosition = mainCamera.transform.position;
                             newPosition.y = controllerForCalibration.transform.position.y;
-                            newPosition.z -= 3f; //TODO: Adjust this value!
+                            newPosition.z -= radius;
                             environmentToCalibrate.transform.position = newPosition;
 
                             // Enable buildings
