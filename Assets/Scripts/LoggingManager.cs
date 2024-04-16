@@ -11,15 +11,19 @@ public class LoggingManager : MonoBehaviour
     public CalibrationManager calibrationManager;
     public GameObject[] maps;
     public Transform[] destinations;
+    public GameObject turnSign;
+    public GameObject absoluteArrow;
     public int participantNumber = 0;
-    public string condition = "A";
-    public int map = 1;
+    public string conditionNumber = "A";
+    public int mapNumber = 1;
+    private GameObject map;
     private Transform destination;
     private Vector3 playerToDest;
     private Vector3 previousPlayerPosition;
     private float destinationThreshold = 2f;
     private bool isStart = false;
     private bool isFileWritten = false;
+    private bool isHit = false;
     private float startTime = 0f;
     private float endTime = 0f;
     private float duration = 0f;
@@ -30,29 +34,89 @@ public class LoggingManager : MonoBehaviour
     private string timeString = "2024-04-11_13:00:00";
     private string savepath = "";
     private StreamWriter writer;
+
     // Start is called before the first frame update
     void Start()
     {
         ROOT = Application.persistentDataPath;
         timeString = System.DateTime.Now.ToString("yyyy-MM-dd_HH:mm:ss");
-        savepath = Path.Combine(ROOT, participantNumber + "_" + condition + "_" + map + "_" + timeString + ".csv");
+        savepath = Path.Combine(ROOT, participantNumber + "_" + conditionNumber + "_" + mapNumber + "_" + timeString + ".csv");
         writer = new StreamWriter(savepath, true);
-        string line = "Participant number, Timestamp, Relative Position x, Relative Position y, Hit";
+        string line = "Participant number, Timestamp, Relative Position x, Relative Position z, Hit";
         writer.WriteLine(line);
         previousPlayerPosition = player.position;
-        if(map == 1){
+        // Assign map and destination
+        if(mapNumber == 1){
+            map = maps[0];
             destination = destinations[0];
         }
-        else if(map == 2){
+        else if(mapNumber == 2){
+            map = maps[1];
             destination = destinations[1];
         }
-        else if(map == 3){
+        else if(mapNumber == 3){
+            map = maps[2];
             destination = destinations[2];
         }
         else{
+            map = maps[3];
             destination = destinations[3];
         }
+        foreach (GameObject m in maps)
+        {
+            m.SetActive(false);
+        }
+        map.SetActive(true);
+        // Assign navigation methods
+        if(conditionNumber == "A"){         // Turn sign
+            turnSign.SetActive(true);
+            absoluteArrow.SetActive(false);
+            foreach (Transform child in map.transform){
+                if(child.tag == "Highlight" || child.tag == "Beacon"){
+                    child.gameObject.SetActive(false);
+                }
+            }
+        }
+        else if(conditionNumber == "B"){    // Road highlights
+            turnSign.SetActive(false);
+            absoluteArrow.SetActive(false);
+            foreach (Transform child in map.transform){
+                if(child.tag == "Highlight"){
+                    child.gameObject.SetActive(true);
+                }
+                if(child.tag == "Beacon"){
+                    child.gameObject.SetActive(false);
+                }
+            }
+        }
+        else if(conditionNumber == "C"){    // Absolute Arrow
+            turnSign.SetActive(false);
+            absoluteArrow.SetActive(true);
+            foreach (Transform child in map.transform){
+                if(child.tag == "Highlight" || child.tag == "Beacon"){
+                    child.gameObject.SetActive(false);
+                }
+            }
+        }
+        else{                               // Beacon
+            turnSign.SetActive(false);
+            absoluteArrow.SetActive(false);
+            foreach (Transform child in map.transform){
+                if(child.tag == "Highlight"){
+                    child.gameObject.SetActive(false);
+                }
+                if(child.tag == "Beacon"){
+                    child.gameObject.SetActive(true);
+                }
+            }
+        }
     }
+
+//     Condition	Method	        Name	        Map
+//      A	        TBT Ego	        Turn signs	    1/2
+//      B	        TBT Non-ego	    Road highlights	1/2
+//      C	        ATCF Ego	    Absolute arrow	3/4
+//      D	        ATCF Non-ego	Beacon	        3/4
 
     // Update is called once per frame
     void Update()
@@ -61,20 +125,26 @@ public class LoggingManager : MonoBehaviour
             isStart = true;
             startTime = Time.time;
         }
-        playerToDest = player.position - destination.position;
-        Vector3 playerToDestXZ = new Vector3(playerToDest.x, 0f, playerToDest.z);
         if(isStart){
+            Vector3 relativePlayerPosition = player.position - map.transform.position;
+            playerToDest = player.position - destination.position;
+            Vector3 playerToDestXZ = new Vector3(playerToDest.x, 0f, playerToDest.z);
             distance += new Vector3(player.position.x-previousPlayerPosition.x, 0f, player.position.z-previousPlayerPosition.z).magnitude;
             previousPlayerPosition = player.position;
-            // if(){
-
-            // }
+            float timeToNow = (Time.time - startTime);
+            string line = participantNumber.ToString() + "," 
+                        + timeToNow.ToString("0.000") + "," 
+                        + relativePlayerPosition.x.ToString("0.000") + "," 
+                        + relativePlayerPosition.z.ToString("0.000") + ","
+                        + (isHit ? 1 : 0);
+            writer.WriteLine(line);
+            // End condition
             if(playerToDestXZ.magnitude < destinationThreshold){
                 isStart = false;
-                endTime = Time.time;
-                duration = endTime - startTime;
-                string line = "1," + duration.ToString("0.000") + "," + distance.ToString("0.000") + "," + countHitWall.ToString();
-                writer.WriteLine(line);
+                // endTime = Time.time;
+                // duration = endTime - startTime;
+                // string line = "1," + duration.ToString("0.000") + "," + distance.ToString("0.000") + "," + countHitWall.ToString();
+                // writer.WriteLine(line);
                 writer.Close();
                 signArrow.SetActive(false);
                 isFileWritten = true;
@@ -82,10 +152,17 @@ public class LoggingManager : MonoBehaviour
         }
     }
 
-    void OnCollisionEnter(Collision collision)
+    private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.tag == "Building" && isStart){
-            countHitWall++;
+            isHit = true;
+        }
+    }
+
+    private void OnCollisionExit(Collision collision)
+    {
+        if (collision.gameObject.tag == "Building" && isStart){
+            isHit = false;
         }
     }
 }

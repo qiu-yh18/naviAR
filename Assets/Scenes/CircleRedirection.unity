@@ -3358,6 +3358,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 158792178944085014, guid: 55ea79c3e11090b419cbade14d9651c9, type: 3}
   m_PrefabInstance: {fileID: 505785774}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &505785776 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 158792178944249910, guid: 55ea79c3e11090b419cbade14d9651c9, type: 3}
+  m_PrefabInstance: {fileID: 505785774}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &520363576
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7920,9 +7925,11 @@ MonoBehaviour:
   - {fileID: 8313700407999335219}
   - {fileID: 6941013007995124341}
   - {fileID: 1407314582}
+  turnSign: {fileID: 578549943}
+  absoluteArrow: {fileID: 505785776}
   participantNumber: 0
-  condition: A
-  map: 1
+  conditionNumber: A
+  mapNumber: 1
 --- !u!1 &1498910331 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7954474641686440796, guid: f54012181eacade4ea242c65f804720f, type: 3}
@@ -13166,6 +13173,10 @@ PrefabInstance:
       propertyPath: circleCenterTransform
       value: 
       objectReference: {fileID: 263637485}
+    - target: {fileID: 3344729675800898997, guid: 4ff14ce1287930b4e839b63ce65d14ab, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8439549703396345818, guid: 4ff14ce1287930b4e839b63ce65d14ab, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -13215,7 +13226,8 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 3344729675800898997, guid: 4ff14ce1287930b4e839b63ce65d14ab, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4ff14ce1287930b4e839b63ce65d14ab, type: 3}
@@ -18699,7 +18711,8 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 263637485}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 6096475896524497228, guid: 3940ce5a6b5c74a42aca56a085a86708, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3940ce5a6b5c74a42aca56a085a86708, type: 3}
