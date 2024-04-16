@@ -7,9 +7,14 @@ using System.IO;
 public class LoggingManager : MonoBehaviour
 {
     public Transform player;
-    public Transform destination;
     public GameObject signArrow;
     public CalibrationManager calibrationManager;
+    public GameObject[] maps;
+    public Transform[] destinations;
+    public int participantNumber = 0;
+    public string condition = "A";
+    public int map = 1;
+    private Transform destination;
     private Vector3 playerToDest;
     private Vector3 previousPlayerPosition;
     private float destinationThreshold = 2f;
@@ -22,19 +27,31 @@ public class LoggingManager : MonoBehaviour
     private int countHitWall = 0;
     private float durationOffTrack = 0f;
     private string ROOT;
-    private string subjectname = "2024-04-11_13:00:00";
+    private string timeString = "2024-04-11_13:00:00";
     private string savepath = "";
     private StreamWriter writer;
     // Start is called before the first frame update
     void Start()
     {
         ROOT = Application.persistentDataPath;
-        subjectname = System.DateTime.Now.ToString("yyyy-MM-dd_HH:mm:ss");
-        savepath = Path.Combine(ROOT, subjectname + ".csv");
+        timeString = System.DateTime.Now.ToString("yyyy-MM-dd_HH:mm:ss");
+        savepath = Path.Combine(ROOT, participantNumber + "_" + condition + "_" + map + "_" + timeString + ".csv");
         writer = new StreamWriter(savepath, true);
-        string line = "Participant number, Completion time (s), Distance (m), Count Hit Wall";
+        string line = "Participant number, Timestamp, Relative Position x, Relative Position y, Hit";
         writer.WriteLine(line);
         previousPlayerPosition = player.position;
+        if(map == 1){
+            destination = destinations[0];
+        }
+        else if(map == 2){
+            destination = destinations[1];
+        }
+        else if(map == 3){
+            destination = destinations[2];
+        }
+        else{
+            destination = destinations[3];
+        }
     }
 
     // Update is called once per frame
