@@ -6,7 +6,7 @@ using System.IO;
 
 public class LoggingManager : MonoBehaviour
 {
-    public Transform player;
+    public PlayerCollider player;
     public GameObject signArrow;
     public CalibrationManager calibrationManager;
     public GameObject[] maps;
@@ -23,12 +23,7 @@ public class LoggingManager : MonoBehaviour
     private float destinationThreshold = 2f;
     private bool isStart = false;
     private bool isFileWritten = false;
-    private bool isHit = false;
     private float startTime = 0f;
-    private float endTime = 0f;
-    private float duration = 0f;
-    private float distance = 0f;
-    private int countHitWall = 0;
     private float durationOffTrack = 0f;
     private string ROOT;
     private string timeString = "2024-04-11_13:00:00";
@@ -44,7 +39,7 @@ public class LoggingManager : MonoBehaviour
         writer = new StreamWriter(savepath, true);
         string line = "Participant number, Timestamp, Relative Position x, Relative Position z, Hit";
         writer.WriteLine(line);
-        previousPlayerPosition = player.position;
+        previousPlayerPosition = player.transform.position;
         // Assign map and destination
         if(mapNumber == 1){
             map = maps[0];
@@ -67,6 +62,7 @@ public class LoggingManager : MonoBehaviour
             m.SetActive(false);
         }
         map.SetActive(true);
+        calibrationManager.environmentToCalibrate = map;
         // Assign navigation methods
         if(conditionNumber == "A"){         // Turn sign
             turnSign.SetActive(true);
@@ -126,43 +122,24 @@ public class LoggingManager : MonoBehaviour
             startTime = Time.time;
         }
         if(isStart){
-            Vector3 relativePlayerPosition = player.position - map.transform.position;
-            playerToDest = player.position - destination.position;
+            Vector3 relativePlayerPosition = player.transform.position - map.transform.position;
+            playerToDest = player.transform.position - destination.position;
             Vector3 playerToDestXZ = new Vector3(playerToDest.x, 0f, playerToDest.z);
-            distance += new Vector3(player.position.x-previousPlayerPosition.x, 0f, player.position.z-previousPlayerPosition.z).magnitude;
-            previousPlayerPosition = player.position;
+            previousPlayerPosition = player.transform.position;
             float timeToNow = (Time.time - startTime);
             string line = participantNumber.ToString() + "," 
                         + timeToNow.ToString("0.000") + "," 
                         + relativePlayerPosition.x.ToString("0.000") + "," 
                         + relativePlayerPosition.z.ToString("0.000") + ","
-                        + (isHit ? 1 : 0);
+                        + (player.isHit ? 1 : 0);
             writer.WriteLine(line);
             // End condition
             if(playerToDestXZ.magnitude < destinationThreshold){
                 isStart = false;
-                // endTime = Time.time;
-                // duration = endTime - startTime;
-                // string line = "1," + duration.ToString("0.000") + "," + distance.ToString("0.000") + "," + countHitWall.ToString();
-                // writer.WriteLine(line);
                 writer.Close();
                 signArrow.SetActive(false);
                 isFileWritten = true;
             }
-        }
-    }
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.tag == "Building" && isStart){
-            isHit = true;
-        }
-    }
-
-    private void OnCollisionExit(Collision collision)
-    {
-        if (collision.gameObject.tag == "Building" && isStart){
-            isHit = false;
         }
     }
 }

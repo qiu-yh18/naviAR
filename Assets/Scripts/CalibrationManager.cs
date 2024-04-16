@@ -33,7 +33,6 @@ public class CalibrationManager : MonoBehaviour
 
         // Record the initial rotation of the environment relative to the user
         initialRotation = Quaternion.Inverse(mainCamera.transform.rotation) * environmentToCalibrate.transform.rotation;
-        // initialRotation = Quaternion.identity;
     }
 
     private void Update()
