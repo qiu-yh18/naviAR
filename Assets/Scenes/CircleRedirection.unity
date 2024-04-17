@@ -2545,7 +2545,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 403083812}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -2596,12 +2596,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 403083812}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 2, z: 1}
+  m_LocalScale: {x: 1, y: 4, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 713271061}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &403083817
 MonoBehaviour:
@@ -4019,7 +4019,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a1c09188520e5c48bc3ef01a7771b5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
+  player: {fileID: 403083817}
   straightMaterial: {fileID: 2100000, guid: da608bc1a724dc4458fbbe348fd41c7b, type: 2}
   leftMaterial: {fileID: 2100000, guid: 9e6db4ce22aadaf448cfe11d7458dd00, type: 2}
   rightMaterial: {fileID: 2100000, guid: 5861901ac3f5a524da0aaa014f41c984, type: 2}
@@ -4247,6 +4247,7 @@ Transform:
   - {fileID: 2397133731945210728}
   - {fileID: 704395811}
   - {fileID: 263637485}
+  - {fileID: 403083816}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &729017697
@@ -8056,8 +8057,8 @@ MonoBehaviour:
   turnSign: {fileID: 578549943}
   absoluteArrow: {fileID: 505785776}
   participantNumber: 0
-  conditionNumber: A
-  mapNumber: 2
+  conditionNumber: D
+  mapNumber: 3
 --- !u!1 &1498910331 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7954474641686440796, guid: f54012181eacade4ea242c65f804720f, type: 3}
@@ -11258,7 +11259,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9035195047371219879, guid: 88db4893483a4d74781d2396336bd48f, type: 3}
       propertyPath: alpha
-      value: 1.5
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 9035195047371219879, guid: 88db4893483a4d74781d2396336bd48f, type: 3}
       propertyPath: player
@@ -13615,7 +13616,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1001 &2458196359497906828
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -17541,7 +17542,7 @@ Transform:
   m_GameObject: {fileID: 5035106762538456785}
   serializedVersion: 2
   m_LocalRotation: {x: 0.5, y: 0.5, z: 0.5, w: 0.5}
-  m_LocalPosition: {x: -1, y: 1, z: 59}
+  m_LocalPosition: {x: 26.4, y: 1, z: 8.3}
   m_LocalScale: {x: 2, y: 0.1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -18836,7 +18837,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2542520834148298273, guid: 3940ce5a6b5c74a42aca56a085a86708, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2553942912031879504, guid: 3940ce5a6b5c74a42aca56a085a86708, type: 3}
       propertyPath: m_LocalPosition.x
@@ -20107,4 +20108,3 @@ SceneRoots:
   - {fileID: 1051209958}
   - {fileID: 461179327}
   - {fileID: 1444368304}
-  - {fileID: 403083816}

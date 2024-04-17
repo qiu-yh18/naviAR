@@ -32,6 +32,7 @@ public class LoggingManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        player.gameObject.SetActive(false);
         ROOT = Application.persistentDataPath;
         timeString = System.DateTime.Now.ToString("yyyy-MM-dd_HH:mm:ss");
         savepath = Path.Combine(ROOT, participantNumber + "_" + conditionNumber + "_" + mapNumber + "_" + timeString + ".csv");
@@ -118,6 +119,7 @@ public class LoggingManager : MonoBehaviour
     {
         if(!isFileWritten && !isStart && calibrationManager.isStartButtonActivated){
             isStart = true;
+            player.gameObject.SetActive(true);
             startTime = Time.time;
         }
         if(isStart){
@@ -134,6 +136,7 @@ public class LoggingManager : MonoBehaviour
             // End condition
             if(playerToDestXZ.magnitude < destinationThreshold){
                 isStart = false;
+                player.gameObject.SetActive(false);
                 writer.Close();
                 signArrow.SetActive(false);
                 isFileWritten = true;
