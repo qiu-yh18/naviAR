@@ -19,7 +19,6 @@ public class LoggingManager : MonoBehaviour
     private GameObject map;
     private Transform destination;
     private Vector3 playerToDest;
-    private Vector3 previousPlayerPosition;
     private float destinationThreshold = 2f;
     private bool isStart = false;
     private bool isFileWritten = false;
@@ -39,7 +38,6 @@ public class LoggingManager : MonoBehaviour
         writer = new StreamWriter(savepath, true);
         string line = "Participant number, Timestamp, Relative Position x, Relative Position z, Hit";
         writer.WriteLine(line);
-        previousPlayerPosition = player.transform.position;
         // Assign map and destination
         if(mapNumber == 1){
             map = maps[0];
@@ -68,7 +66,8 @@ public class LoggingManager : MonoBehaviour
             turnSign.SetActive(true);
             absoluteArrow.SetActive(false);
             foreach (Transform child in map.transform){
-                if(child.tag == "Highlight" || child.tag == "Beacon"){
+                // if(child.tag == "Highlight" || child.tag == "Beacon"){ // Note: leave highlight active for test
+                if(child.tag == "Beacon"){
                     child.gameObject.SetActive(false);
                 }
             }
@@ -125,7 +124,6 @@ public class LoggingManager : MonoBehaviour
             Vector3 relativePlayerPosition = player.transform.position - map.transform.position;
             playerToDest = player.transform.position - destination.position;
             Vector3 playerToDestXZ = new Vector3(playerToDest.x, 0f, playerToDest.z);
-            previousPlayerPosition = player.transform.position;
             float timeToNow = (Time.time - startTime);
             string line = participantNumber.ToString() + "," 
                         + timeToNow.ToString("0.000") + "," 
