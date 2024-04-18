@@ -4849,7 +4849,7 @@ MonoBehaviour:
   buttonSetCircleCenter: {fileID: 807088663}
   buttonStart: {fileID: 1008709653}
   mainCamera: {fileID: 1129583078}
-  radius: 2
+  radius: 12
   isStartButtonActivated: 0
 --- !u!4 &461179327
 Transform:
