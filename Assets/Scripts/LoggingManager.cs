@@ -16,6 +16,8 @@ public class LoggingManager : MonoBehaviour
     public int participantNumber = 0;
     public string conditionNumber = "A";
     public int mapNumber = 1;
+    public GameObject endCube;
+    public float timeLimit = 600f;
     private GameObject map;
     private Transform destination;
     private Vector3 playerToDest;
@@ -23,7 +25,7 @@ public class LoggingManager : MonoBehaviour
     private bool isStart = false;
     private bool isFileWritten = false;
     private float startTime = 0f;
-    private float durationOffTrack = 0f;
+    // private float durationOffTrack = 0f;
     private string ROOT;
     private string timeString = "2024-04-11_13:00:00";
     private string savepath = "";
@@ -117,6 +119,7 @@ public class LoggingManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
         if(!isFileWritten && !isStart && calibrationManager.isStartButtonActivated){
             isStart = true;
             player.gameObject.SetActive(true);
@@ -133,12 +136,21 @@ public class LoggingManager : MonoBehaviour
                         + relativePlayerPosition.z.ToString("0.000") + ","
                         + (player.isHit ? 1 : 0);
             writer.WriteLine(line);
+            if(timeToNow > timeLimit){
+                isStart = false;
+                player.gameObject.SetActive(false);
+                writer.Close();
+                endCube.SetActive(true);
+                signArrow.SetActive(false);
+                isFileWritten = true;
+            }
             // End condition
-            if(playerToDestXZ.magnitude < destinationThreshold){
+            else if(playerToDestXZ.magnitude < destinationThreshold){
                 isStart = false;
                 player.gameObject.SetActive(false);
                 writer.Close();
                 signArrow.SetActive(false);
+                endCube.SetActive(true);
                 isFileWritten = true;
             }
         }
