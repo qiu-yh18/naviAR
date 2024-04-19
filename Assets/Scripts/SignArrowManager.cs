@@ -12,7 +12,6 @@ public class SignArrowManager : MonoBehaviour
     public Material noMaterial;
     public GameObject highlights;
     private Image signArrowImage;
-    // private bool isAboveHighlight;
     // Start is called before the first frame update
     void Start()
     {
@@ -37,27 +36,5 @@ public class SignArrowManager : MonoBehaviour
         else{
             signArrowImage.material = noMaterial;
         }
-        
-        // isAboveHighlight = false;
-        // foreach (Transform highlight in highlights.transform){
-        //     Vector3 cameraPositionXZ = new Vector3(player.transform.position.x, 0f, player.transform.position.z);
-        //     Bounds highlightBounds = highlight.GetComponent<Collider>().bounds;
-        //     if (highlightBounds.Contains(cameraPositionXZ))
-        //     {
-        //         isAboveHighlight = true;
-        //         if(highlight.tag == "HighlightStraight"){
-        //             signArrowImage.material = straightMaterial;
-        //         }
-        //         else if(highlight.tag == "HighlightLeft"){
-        //             signArrowImage.material = leftMaterial;
-        //         }
-        //         else{
-        //             signArrowImage.material = rightMaterial;
-        //         }
-        //     }
-        // }
-        // if(!isAboveHighlight){
-        //     signArrowImage.material = noMaterial;
-        // }
     }
 }

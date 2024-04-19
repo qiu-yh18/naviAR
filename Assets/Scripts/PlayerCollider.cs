@@ -20,24 +20,23 @@ public class PlayerCollider : MonoBehaviour
     {
         transform.position = new Vector3(camera.transform.position.x, circleCenter.transform.position.y, camera.transform.position.z);
         RaycastHit hit;
-        if (Physics.Raycast(transform.position, -Vector3.up, out hit, raycastDistance))
+        if (Physics.Raycast(camera.transform.position, -Vector3.up, out hit, raycastDistance))
         {
             GameObject obj = hit.collider.gameObject;
-            // Check if the object hit by the ray is tagged as "Highlight"
-            if (obj.tag == "Highlight")
-            {   
-                if(obj.tag == "HighlightLeft"){
-                    signArrow = 1;
-                }
-                else if(obj.tag == "HighlightRight"){
-                    signArrow = 2;
-                }
-                else if(obj.tag == "HighlightStraight"){
-                    signArrow = 3;
-                }
-                else{
-                    signArrow = 0;
-                }
+            if(obj.CompareTag("HighlightLeft")){
+                signArrow = 1;
+            }
+            else if(obj.CompareTag("HighlightRight")){
+                signArrow = 2;
+            }
+            else if(obj.CompareTag("HighlightStraight")){
+                signArrow = 3;
+            }
+            else if(obj.name.Contains("Highlight")){
+                signArrow = 0;
+            }
+            else{
+                signArrow = 4;
             }
         }
         else {
@@ -45,33 +44,18 @@ public class PlayerCollider : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
-        if (collision.gameObject.tag == "Building"){
+        if (other.CompareTag("Building"))
+        {
             isHit = true;
         }
-        // else if (collision.gameObject.name.Contains("Highlight")){
-        //     if(collision.gameObject.tag == "HighlightLeft"){
-        //         signArrow = 1;
-        //     }
-        //     else if(collision.gameObject.tag == "HighlightRight"){
-        //         signArrow = 2;
-        //     }
-        //     else if(collision.gameObject.tag == "HighlightStraight"){
-        //         signArrow = 3;
-        //     }
-        //     else{
-        //         signArrow = 0;
-        //     }
-        // }
-        // else{
-        //     signArrow = 4;
-        // }
     }
 
-    private void OnCollisionExit(Collision collision)
+    private void OnTriggerExit(Collider other)
     {
-        if (collision.gameObject.tag == "Building"){
+        if (other.CompareTag("Building"))
+        {
             isHit = false;
         }
     }

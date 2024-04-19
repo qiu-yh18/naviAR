@@ -11,13 +11,14 @@ public class CalibrationManager : MonoBehaviour
     public GameObject buttonSetCircleCenter;
     public GameObject buttonStart;
     public Camera mainCamera;
+    public GameObject turnSign;
     public float radius = 12f;
-    private GameObject[] buildings;
-    private bool isCircleCenterSet = false;
     public bool isStartButtonActivated = false;
+    private bool isCircleCenterSet = false;
     private bool isCooldownActive = false; 
     private float cooldownDuration = 1.5f;
     private float cooldownTimer = 0f;
+    private GameObject[] buildings;
     private Quaternion initialRotation;
 
     private void Start()
@@ -30,6 +31,7 @@ public class CalibrationManager : MonoBehaviour
         circleCenterToCalibrate.SetActive(false);
         buttonSetCircleCenter.SetActive(true);
         buttonStart.SetActive(false);
+        turnSign.SetActive(false);
 
         // Record the initial rotation of the environment relative to the user
         initialRotation = Quaternion.Inverse(mainCamera.transform.rotation) * environmentToCalibrate.transform.rotation;
@@ -95,6 +97,7 @@ public class CalibrationManager : MonoBehaviour
                         {
                             buttonStart.SetActive(false);
                             isStartButtonActivated = true;
+                            turnSign.SetActive(true);
                         }
                     }
                 }

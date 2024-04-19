@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using TMPro;
+using System;
 using System.IO;
 
 public class LoggingManager : MonoBehaviour
@@ -13,11 +15,14 @@ public class LoggingManager : MonoBehaviour
     public Transform[] destinations;
     public GameObject turnSign;
     public GameObject absoluteArrow;
+    public GameObject endCube;
+    public TMP_Text endText;
+    public Material successMaterial;
+    public Material failMaterial;
+    public float timeLimit = 600f;
     public int participantNumber = 0;
     public string conditionNumber = "A";
     public int mapNumber = 1;
-    public GameObject endCube;
-    public float timeLimit = 600f;
     private GameObject map;
     private Transform destination;
     private Vector3 playerToDest;
@@ -25,7 +30,7 @@ public class LoggingManager : MonoBehaviour
     private bool isStart = false;
     private bool isFileWritten = false;
     private float startTime = 0f;
-    // private float durationOffTrack = 0f;
+    private Vector3 previousPos;
     private string ROOT;
     private string timeString = "2024-04-11_13:00:00";
     private string savepath = "";
@@ -34,12 +39,13 @@ public class LoggingManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        player.gameObject.SetActive(false);
+        // player.gameObject.SetActive(false);
+        previousPos = player.transform.position;
         ROOT = Application.persistentDataPath;
         timeString = System.DateTime.Now.ToString("yyyy-MM-dd_HH:mm:ss");
         savepath = Path.Combine(ROOT, participantNumber + "_" + conditionNumber + "_" + mapNumber + "_" + timeString + ".csv");
         writer = new StreamWriter(savepath, true);
-        string line = "Participant number, Timestamp, Relative Position x, Relative Position z, Hit";
+        string line = "Participant number, Timestamp, Relative Position x, Relative Position z, Real Speed, Hit";
         writer.WriteLine(line);
         // Assign map and destination
         if(mapNumber == 1){
@@ -119,7 +125,6 @@ public class LoggingManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
         if(!isFileWritten && !isStart && calibrationManager.isStartButtonActivated){
             isStart = true;
             player.gameObject.SetActive(true);
@@ -130,16 +135,23 @@ public class LoggingManager : MonoBehaviour
             playerToDest = player.transform.position - destination.position;
             Vector3 playerToDestXZ = new Vector3(playerToDest.x, 0f, playerToDest.z);
             float timeToNow = (Time.time - startTime);
+            Vector3 displacement = player.transform.position - previousPos;
+            previousPos = player.transform.position;
+            float speed = new Vector3(displacement.x, 0f, displacement.z).magnitude/Time.deltaTime;
             string line = participantNumber.ToString() + "," 
                         + timeToNow.ToString("0.000") + "," 
                         + relativePlayerPosition.x.ToString("0.000") + "," 
                         + relativePlayerPosition.z.ToString("0.000") + ","
+                        + speed.ToString("0.000") + ","
                         + (player.isHit ? 1 : 0);
             writer.WriteLine(line);
             if(timeToNow > timeLimit){
                 isStart = false;
                 player.gameObject.SetActive(false);
                 writer.Close();
+                endText.SetText("Time is up! You did not reach the destination. Please take off the headset.");
+                Renderer renderer = endCube.GetComponent<Renderer>();
+                renderer.material = failMaterial;
                 endCube.SetActive(true);
                 signArrow.SetActive(false);
                 isFileWritten = true;
@@ -148,6 +160,10 @@ public class LoggingManager : MonoBehaviour
             else if(playerToDestXZ.magnitude < destinationThreshold){
                 isStart = false;
                 player.gameObject.SetActive(false);
+                endText.SetText("Congratulations! You have reached the destination! Please take off the headset.");
+                Renderer renderer = endCube.GetComponent<Renderer>();
+                renderer.material = successMaterial;
+                endCube.SetActive(true);
                 writer.Close();
                 signArrow.SetActive(false);
                 endCube.SetActive(true);
