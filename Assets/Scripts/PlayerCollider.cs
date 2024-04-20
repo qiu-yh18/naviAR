@@ -8,7 +8,7 @@ public class PlayerCollider : MonoBehaviour
     public GameObject circleCenter;
     public int signArrow = 0; //0, show nothing. 1, turn left. 2, turn right. 3, go straight. 4, no further.
     public bool isHit;
-    private float raycastDistance = 100f;
+    private float raycastDistance = 10f;
     // Start is called before the first frame update
     void Start()
     {

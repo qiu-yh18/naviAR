@@ -75,8 +75,16 @@ public class LoggingManager : MonoBehaviour
             turnSign.SetActive(true);
             absoluteArrow.SetActive(false);
             foreach (Transform child in map.transform){
-                if(child.tag == "Highlight" || child.tag == "Beacon"){ // Note: leave highlight active for test
+                if(child.tag == "Beacon"){ // Note: leave highlight active for test
                     child.gameObject.SetActive(false);
+                }
+                else if(child.tag == "Highlight"){
+                    Transform highlights = child.transform;
+                    foreach (Transform highlight in highlights){
+                        foreach (Transform canvas in highlight){
+                            canvas.gameObject.SetActive(false);
+                        }
+                    }
                 }
             }
         }
