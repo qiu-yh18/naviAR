@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class CircleRedirection : MonoBehaviour
 {
+    public bool isGrid = false;
     public float alpha = 1.3f; // Rotation redirection coefficient
     public float beta = 0.5f; // Position redirection coefficient
     private float radius = 12f;
@@ -63,11 +64,16 @@ public class CircleRedirection : MonoBehaviour
         float theta = Mathf.Atan2(currentPlayerPositionXZ.z - circleCenterPositionXZ.z, currentPlayerPositionXZ.x - circleCenterPositionXZ.x);
         xOnLine = radius * Mathf.Cos(theta);
         float displacementX = xOnLine - previousXOnLine;
-        if(normalizedDistance >= 0.7){
-            rotationAngle = Mathf.Atan2(displacementX, radius) * Mathf.Rad2Deg * alpha * Mathf.Sign(theta) /** normalizedDistance*/;
+        if(isGrid){
+            if(normalizedDistance >= 0.75){
+                rotationAngle = Mathf.Atan2(displacementX, radius) * Mathf.Rad2Deg * alpha * Mathf.Sign(theta);
+            }
+            else{ // disable rotation when the user is too close to the center.
+                rotationAngle = 0f;
+            }
         }
-        else{ // disable rotation when the user is too close to the center.
-            rotationAngle = 0f;
+        else{
+            rotationAngle = Mathf.Atan2(displacementX, radius) * Mathf.Rad2Deg * alpha * Mathf.Sign(theta) * normalizedDistance;
         }
         transform.RotateAround(currentPlayerPositionXZ, Vector3.up, rotationAngle);
         previousXOnLine = xOnLine;

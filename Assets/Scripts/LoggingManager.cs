@@ -68,7 +68,6 @@ public class LoggingManager : MonoBehaviour
         {
             m.SetActive(false);
         }
-        map.SetActive(true);
         calibrationManager.environmentToCalibrate = map;
         // Assign navigation methods
         if(conditionNumber == "A"){         // Turn sign
@@ -132,7 +131,7 @@ public class LoggingManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(!isFileWritten && !isStart && calibrationManager.isStartButtonActivated){
+        if(calibrationManager.isStartButtonActivated&& !isFileWritten && !isStart){
             isStart = true;
             player.gameObject.SetActive(true);
             startTime = Time.time;

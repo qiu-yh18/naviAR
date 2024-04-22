@@ -85,6 +85,7 @@ public class CalibrationManager : MonoBehaviour
                             environmentToCalibrate.transform.position = newPosition;
 
                             // Enable buildings
+                            environmentToCalibrate.SetActive(true);
                             foreach (GameObject building in buildings)
                             {
                                 building.SetActive(true);

@@ -51,7 +51,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2155706482727465416}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -122,7 +122,7 @@ MonoBehaviour:
   alpha: 0.66
   circleRedirection: {fileID: 0}
   circleCenter: {fileID: 0}
-  player: {fileID: 0}
+  playerCollider: {fileID: 0}
 --- !u!54 &608399152978302256
 Rigidbody:
   m_ObjectHideFlags: 0
