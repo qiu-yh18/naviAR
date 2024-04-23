@@ -10,11 +10,11 @@ public class LoggingManager : MonoBehaviour
 {
     public PlayerCollider player;
     public GameObject signArrow;
+    public AbsoluteArrow absoluteArrow;
     public CalibrationManager calibrationManager;
     public GameObject[] maps;
     public Transform[] destinations;
     public GameObject turnSign;
-    public GameObject absoluteArrow;
     public GameObject endCube;
     public TMP_Text endText;
     public Material successMaterial;
@@ -68,11 +68,12 @@ public class LoggingManager : MonoBehaviour
         {
             m.SetActive(false);
         }
+        absoluteArrow.destination = destination;
         calibrationManager.environmentToCalibrate = map;
         // Assign navigation methods
         if(conditionNumber == "A"){         // Turn sign
             turnSign.SetActive(true);
-            absoluteArrow.SetActive(false);
+            absoluteArrow.gameObject.SetActive(false);
             foreach (Transform child in map.transform){
                 if(child.tag == "Beacon"){ // Note: leave highlight active for test
                     child.gameObject.SetActive(false);
@@ -89,7 +90,7 @@ public class LoggingManager : MonoBehaviour
         }
         else if(conditionNumber == "B"){    // Road highlights
             turnSign.SetActive(false);
-            absoluteArrow.SetActive(false);
+            absoluteArrow.gameObject.SetActive(false);
             foreach (Transform child in map.transform){
                 if(child.tag == "Highlight"){
                     child.gameObject.SetActive(true);
@@ -101,7 +102,7 @@ public class LoggingManager : MonoBehaviour
         }
         else if(conditionNumber == "C"){    // Absolute Arrow
             turnSign.SetActive(false);
-            absoluteArrow.SetActive(true);
+            absoluteArrow.gameObject.SetActive(true);
             foreach (Transform child in map.transform){
                 if(child.tag == "Highlight" || child.tag == "Beacon"){
                     child.gameObject.SetActive(false);
@@ -110,7 +111,7 @@ public class LoggingManager : MonoBehaviour
         }
         else{                               // Beacon
             turnSign.SetActive(false);
-            absoluteArrow.SetActive(false);
+            absoluteArrow.gameObject.SetActive(false);
             foreach (Transform child in map.transform){
                 if(child.tag == "Highlight"){
                     child.gameObject.SetActive(false);
