@@ -16,6 +16,7 @@ TagManager:
   - StartPoint
   - AbsoluteArrow
   - TurnSigns
+  - IntersectionArrows
   layers:
   - Default
   - TransparentFX
