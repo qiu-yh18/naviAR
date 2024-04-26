@@ -57,7 +57,6 @@ public class CalibrationManager : MonoBehaviour
                 GameObject obj = hit.collider.gameObject;
                 if (obj.CompareTag("Button"))
                 {
-                    // Only proceed if the cooldown is not active
                     if (!isCooldownActive)
                     {
                         // Calibration Stage 1: 

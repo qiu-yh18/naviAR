@@ -65,7 +65,7 @@ public class CircleRedirection : MonoBehaviour
         xOnLine = radius * Mathf.Cos(theta);
         float displacementX = xOnLine - previousXOnLine;
         if(isGrid){
-            if(normalizedDistance >= 0.75){
+            if(normalizedDistance >= 0.55){
                 rotationAngle = Mathf.Atan2(displacementX, radius) * Mathf.Rad2Deg * alpha * Mathf.Sign(theta);
             }
             else{ // disable rotation when the user is too close to the center.
@@ -73,7 +73,7 @@ public class CircleRedirection : MonoBehaviour
             }
         }
         else{
-            rotationAngle = Mathf.Atan2(displacementX, radius) * Mathf.Rad2Deg * alpha * Mathf.Sign(theta) * normalizedDistance;
+            rotationAngle = Mathf.Atan2(displacementX, radius) * Mathf.Rad2Deg * alpha * Mathf.Sign(theta) * distanceToCenter / radius;
         }
         transform.RotateAround(currentPlayerPositionXZ, Vector3.up, rotationAngle);
         previousXOnLine = xOnLine;

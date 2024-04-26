@@ -10,18 +10,19 @@ public class LoggingManager : MonoBehaviour
 {
     public GameObject camera;
     public PlayerCollider player;
-    public GameObject signArrow;
+    public SignArrowManager signArrow;
     public AbsoluteArrow absoluteArrow;
     public CalibrationManager calibrationManager;
     public GameObject[] maps;
     public Transform[] destinations;
     public GameObject turnSign;
+    public TMP_Text participantNumberText;
     public GameObject endCube;
     public TMP_Text endText;
     public Material successMaterial;
     public Material failMaterial;
     public float timeLimit = 300f;
-    public int participantNumber = 0;
+    public int participantNumber = 12;
     public string conditionNumber = "A";
     public int mapNumber = 1;
     private GameObject map;
@@ -36,18 +37,17 @@ public class LoggingManager : MonoBehaviour
     private string timeString = "2024-04-11_13:00:00";
     private string savepath = "";
     private StreamWriter writer;
+    private bool isCooldownActive = false; 
+    private float cooldownDuration = 0.3f;
+    private float cooldownTimer = 0f;
+    private Transform highlights;
 
     // Start is called before the first frame update
     void Start()
     {
-        // player.gameObject.SetActive(false);
+        participantNumberText.SetText(participantNumber.ToString());
         previousPos = player.transform.position;
-        ROOT = Application.persistentDataPath;
-        timeString = System.DateTime.Now.ToString("yyyy-MM-dd_HH:mm:ss");
-        savepath = Path.Combine(ROOT, participantNumber + "_" + conditionNumber + "_" + mapNumber + "_" + timeString + ".csv");
-        writer = new StreamWriter(savepath, true);
-        string line = "Participant number, Timestamp, Relative Position x, Relative Position y, Relative Position z, Real Position x, Real Position y, Real Position z, Real Speed, Hit";
-        writer.WriteLine(line);
+        
         // Assign map and destination
         if(mapNumber == 1){
             map = maps[0];
@@ -70,6 +70,7 @@ public class LoggingManager : MonoBehaviour
             m.SetActive(false);
         }
         absoluteArrow.destination = destination;
+        
         calibrationManager.environmentToCalibrate = map;
         // Assign navigation methods
         if(conditionNumber == "A"){         // Turn sign
@@ -81,7 +82,7 @@ public class LoggingManager : MonoBehaviour
                 }
                 else if(child.tag == "Highlight"){
                     child.gameObject.SetActive(true);
-                    Transform highlights = child.transform;
+                    highlights = child.transform;
                     foreach (Transform highlight in highlights){
                         foreach (Transform canvas in highlight){
                             canvas.gameObject.SetActive(false);
@@ -99,7 +100,7 @@ public class LoggingManager : MonoBehaviour
             foreach (Transform child in map.transform){
                 if(child.tag == "Highlight"){
                     child.gameObject.SetActive(true);
-                    Transform highlights = child.transform;
+                    highlights = child.transform;
                     foreach (Transform highlight in highlights){
                         foreach (Transform canvas in highlight){
                             canvas.gameObject.SetActive(false);
@@ -146,12 +147,46 @@ public class LoggingManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(calibrationManager.isStartButtonActivated&& !isFileWritten && !isStart){
+        if (isCooldownActive)
+        {
+            cooldownTimer += Time.deltaTime;
+            if (cooldownTimer >= cooldownDuration)
+            {
+                isCooldownActive = false;
+                cooldownTimer = 0f;
+            }
+        }
+        if(!calibrationManager.isStartButtonActivated){
+            if (OVRInput.Get(OVRInput.Axis1D.PrimaryHandTrigger) > 0f){
+                if (!isCooldownActive)
+                {
+                    participantNumber--;
+                    participantNumberText.SetText(participantNumber.ToString());
+                    isCooldownActive = true;
+                }
+            }
+            if (OVRInput.Get(OVRInput.Axis1D.SecondaryHandTrigger) > 0f){
+                if (!isCooldownActive){
+                    participantNumber++;
+                    participantNumberText.SetText(participantNumber.ToString());
+                    isCooldownActive = true;
+                }
+            }
+        }
+        else if(!isFileWritten && !isStart){
+            ROOT = Application.persistentDataPath;
+            timeString = System.DateTime.Now.ToString("yyyy-MM-dd_HH:mm:ss");
+            savepath = Path.Combine(ROOT, participantNumber + "_" + conditionNumber + "_" + mapNumber + "_" + timeString + ".csv");
+            writer = new StreamWriter(savepath, true);
+            string line = "Participant number, Timestamp, Relative Position x, Relative Position y, Relative Position z, Real Position x, Real Position y, Real Position z, Real Speed, Hit";
+            writer.WriteLine(line);
+            participantNumberText.gameObject.SetActive(false);
             isStart = true;
             player.gameObject.SetActive(true);
             startTime = Time.time;
+            signArrow.highlights = highlights.gameObject;
         }
-        if(isStart){
+        else if(isStart){
             Vector3 relativePlayerPosition = camera.transform.position - map.transform.position;
             playerToDest = player.transform.position - destination.position;
             Vector3 playerToDestXZ = new Vector3(playerToDest.x, 0f, playerToDest.z);
@@ -178,7 +213,7 @@ public class LoggingManager : MonoBehaviour
                 Renderer renderer = endCube.GetComponent<Renderer>();
                 renderer.material = failMaterial;
                 endCube.SetActive(true);
-                signArrow.SetActive(false);
+                signArrow.gameObject.SetActive(false);
                 isFileWritten = true;
             }
             // End condition
@@ -190,7 +225,7 @@ public class LoggingManager : MonoBehaviour
                 renderer.material = successMaterial;
                 endCube.SetActive(true);
                 writer.Close();
-                signArrow.SetActive(false);
+                signArrow.gameObject.SetActive(false);
                 endCube.SetActive(true);
                 isFileWritten = true;
             }
