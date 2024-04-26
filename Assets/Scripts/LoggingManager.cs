@@ -8,6 +8,7 @@ using System.IO;
 
 public class LoggingManager : MonoBehaviour
 {
+    public GameObject camera;
     public PlayerCollider player;
     public GameObject signArrow;
     public AbsoluteArrow absoluteArrow;
@@ -19,7 +20,7 @@ public class LoggingManager : MonoBehaviour
     public TMP_Text endText;
     public Material successMaterial;
     public Material failMaterial;
-    public float timeLimit = 600f;
+    public float timeLimit = 300f;
     public int participantNumber = 0;
     public string conditionNumber = "A";
     public int mapNumber = 1;
@@ -45,7 +46,7 @@ public class LoggingManager : MonoBehaviour
         timeString = System.DateTime.Now.ToString("yyyy-MM-dd_HH:mm:ss");
         savepath = Path.Combine(ROOT, participantNumber + "_" + conditionNumber + "_" + mapNumber + "_" + timeString + ".csv");
         writer = new StreamWriter(savepath, true);
-        string line = "Participant number, Timestamp, Relative Position x, Relative Position z, Real Speed, Hit";
+        string line = "Participant number, Timestamp, Relative Position x, Relative Position y, Relative Position z, Real Position x, Real Position y, Real Position z, Real Speed, Hit";
         writer.WriteLine(line);
         // Assign map and destination
         if(mapNumber == 1){
@@ -151,7 +152,7 @@ public class LoggingManager : MonoBehaviour
             startTime = Time.time;
         }
         if(isStart){
-            Vector3 relativePlayerPosition = player.transform.position - map.transform.position;
+            Vector3 relativePlayerPosition = camera.transform.position - map.transform.position;
             playerToDest = player.transform.position - destination.position;
             Vector3 playerToDestXZ = new Vector3(playerToDest.x, 0f, playerToDest.z);
             float timeToNow = (Time.time - startTime);
@@ -161,7 +162,11 @@ public class LoggingManager : MonoBehaviour
             string line = participantNumber.ToString() + "," 
                         + timeToNow.ToString("0.000") + "," 
                         + relativePlayerPosition.x.ToString("0.000") + "," 
+                        + relativePlayerPosition.y.ToString("0.000") + "," 
                         + relativePlayerPosition.z.ToString("0.000") + ","
+                        + camera.transform.position.x.ToString("0.000") + "," 
+                        + camera.transform.position.y.ToString("0.000") + "," 
+                        + camera.transform.position.z.ToString("0.000") + ","
                         + speed.ToString("0.000") + ","
                         + (player.isHit ? 1 : 0);
             writer.WriteLine(line);

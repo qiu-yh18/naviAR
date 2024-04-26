@@ -2304,6 +2304,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d29fe3d5c32f8c048a6df544472de992, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  camera: {fileID: 428007859}
   player: {fileID: 403083817}
   signArrow: {fileID: 652328320}
   absoluteArrow: {fileID: 505785777}
