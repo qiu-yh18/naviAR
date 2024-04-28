@@ -21,7 +21,7 @@ public class LoggingManager : MonoBehaviour
     public TMP_Text endText;
     public Material successMaterial;
     public Material failMaterial;
-    public float timeLimit = 300f;
+    // public float timeLimit = 300f;
     public int participantNumber = 12;
     public string conditionNumber = "A";
     public int mapNumber = 1;
@@ -178,7 +178,7 @@ public class LoggingManager : MonoBehaviour
             timeString = System.DateTime.Now.ToString("yyyy-MM-dd_HH:mm:ss");
             savepath = Path.Combine(ROOT, participantNumber + "_" + conditionNumber + "_" + mapNumber + "_" + timeString + ".csv");
             writer = new StreamWriter(savepath, true);
-            string line = "Participant number, Timestamp, Relative Position x, Relative Position y, Relative Position z, Real Position x, Real Position y, Real Position z, Real Speed, Hit";
+            string line = "Participant number, Timestamp, Relative Pos x, Relative Pos y, Relative Pos z, Env Pos x, Env Pos y, Env Pos z, Real Pos x, Real Pos y, Real Pos z, Real Rotation x, Real Rotation y, Real Rotation z, Dist to Dest, Real Speed, Hit";
             writer.WriteLine(line);
             participantNumberText.gameObject.SetActive(false);
             isStart = true;
@@ -199,23 +199,31 @@ public class LoggingManager : MonoBehaviour
                         + relativePlayerPosition.x.ToString("0.000") + "," 
                         + relativePlayerPosition.y.ToString("0.000") + "," 
                         + relativePlayerPosition.z.ToString("0.000") + ","
+                        + map.transform.position.x.ToString("0.000") + "," 
+                        + map.transform.position.y.ToString("0.000") + "," 
+                        + map.transform.position.z.ToString("0.000") + ","
                         + camera.transform.position.x.ToString("0.000") + "," 
                         + camera.transform.position.y.ToString("0.000") + "," 
                         + camera.transform.position.z.ToString("0.000") + ","
+                        + camera.transform.rotation.x.ToString("0.000") + "," 
+                        + camera.transform.rotation.y.ToString("0.000") + "," 
+                        + camera.transform.rotation.z.ToString("0.000") + ","
+                        + playerToDestXZ.magnitude + ","
                         + speed.ToString("0.000") + ","
                         + (player.isHit ? 1 : 0);
             writer.WriteLine(line);
-            if(timeToNow > timeLimit){
-                isStart = false;
-                player.gameObject.SetActive(false);
-                writer.Close();
-                endText.SetText("Time is up! You did not reach the destination. Please take off the headset.");
-                Renderer renderer = endCube.GetComponent<Renderer>();
-                renderer.material = failMaterial;
-                endCube.SetActive(true);
-                signArrow.gameObject.SetActive(false);
-                isFileWritten = true;
-            }
+            // Time limit
+            // if(timeToNow > timeLimit){
+            //     isStart = false;
+            //     player.gameObject.SetActive(false);
+            //     writer.Close();
+            //     endText.SetText("Time is up! You did not reach the destination. Please take off the headset.");
+            //     Renderer renderer = endCube.GetComponent<Renderer>();
+            //     renderer.material = failMaterial;
+            //     endCube.SetActive(true);
+            //     signArrow.gameObject.SetActive(false);
+            //     isFileWritten = true;
+            // }
             // End condition
             else if(playerToDestXZ.magnitude < destinationThreshold){
                 isStart = false;
