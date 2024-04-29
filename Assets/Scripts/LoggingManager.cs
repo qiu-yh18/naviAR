@@ -28,7 +28,7 @@ public class LoggingManager : MonoBehaviour
     private GameObject map;
     private Transform destination;
     private Vector3 playerToDest;
-    private float destinationThreshold = 2f;
+    private float destinationThreshold = 1.5f;
     private bool isStart = false;
     private bool isFileWritten = false;
     private float startTime = 0f;
@@ -172,6 +172,9 @@ public class LoggingManager : MonoBehaviour
                     isCooldownActive = true;
                 }
             }
+            if(calibrationManager.isCircleCenterSet){
+                participantNumberText.gameObject.SetActive(false);
+            }
         }
         else if(!isFileWritten && !isStart){
             ROOT = Application.persistentDataPath;
@@ -225,7 +228,7 @@ public class LoggingManager : MonoBehaviour
             //     isFileWritten = true;
             // }
             // End condition
-            else if(playerToDestXZ.magnitude < destinationThreshold){
+            if(playerToDestXZ.magnitude < destinationThreshold){
                 isStart = false;
                 player.gameObject.SetActive(false);
                 endText.SetText("Congratulations! You have reached the destination! Please take off the headset.");

@@ -60,20 +60,22 @@ public class CircleRedirection : MonoBehaviour
         Vector3 displacementXZ = currentPlayerPositionXZ - previousPlayerPositionXZ;
         transform.position -= beta * displacementXZ;
         float distanceToCenter = Vector3.Distance(currentPlayerPositionXZ, circleCenterPositionXZ);
-        float normalizedDistance = Mathf.Clamp01(distanceToCenter / radius); // normalize distance to [0,1]
+        float normalizedDistance = distanceToCenter / radius;
         float theta = Mathf.Atan2(currentPlayerPositionXZ.z - circleCenterPositionXZ.z, currentPlayerPositionXZ.x - circleCenterPositionXZ.x);
         xOnLine = radius * Mathf.Cos(theta);
         float displacementX = xOnLine - previousXOnLine;
+        // For grid maps, disable redirection when the user is in the circle.
         if(isGrid){
             if(normalizedDistance >= 0.55){
                 rotationAngle = Mathf.Atan2(displacementX, radius) * Mathf.Rad2Deg * alpha * Mathf.Sign(theta);
             }
-            else{ // disable rotation when the user is too close to the center.
+            else{ 
                 rotationAngle = 0f;
             }
         }
+        // For non-grid maps, there is always redirection.
         else{
-            rotationAngle = Mathf.Atan2(displacementX, radius) * Mathf.Rad2Deg * alpha * Mathf.Sign(theta) * distanceToCenter / radius;
+            rotationAngle = Mathf.Atan2(displacementX, radius) * Mathf.Rad2Deg * alpha * Mathf.Sign(theta) * normalizedDistance;
         }
         transform.RotateAround(currentPlayerPositionXZ, Vector3.up, rotationAngle);
         previousXOnLine = xOnLine;

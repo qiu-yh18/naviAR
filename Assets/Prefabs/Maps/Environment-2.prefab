@@ -436,8 +436,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isGrid: 1
-  alpha: 1.32
-  beta: 0.65
+  alpha: 1.4
+  beta: 0.7
   calibrationManager: {fileID: 0}
   playerTransform: {fileID: 0}
   circleCenterTransform: {fileID: 0}
@@ -754,8 +754,8 @@ GameObject:
   m_Component:
   - component: {fileID: 6335836668850054103}
   m_Layer: 0
-  m_Name: TurnArrows
-  m_TagString: Untagged
+  m_Name: IntersectionArrows
+  m_TagString: IntersectionArrows
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

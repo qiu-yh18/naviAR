@@ -14,7 +14,7 @@ public class CalibrationManager : MonoBehaviour
     public GameObject turnSign;
     public float radius = 12f;
     public bool isStartButtonActivated = false;
-    private bool isCircleCenterSet = false;
+    public bool isCircleCenterSet = false;
     private bool isCooldownActive = false; 
     private float cooldownDuration = 1.5f;
     private float cooldownTimer = 0f;
