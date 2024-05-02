@@ -14,6 +14,7 @@ public class LoggingManager : MonoBehaviour
     public AbsoluteArrow absoluteArrow;
     public CalibrationManager calibrationManager;
     public GameObject[] maps;
+    public Transform[] startPoints;
     public Transform[] destinations;
     public GameObject turnSign;
     public TMP_Text participantNumberText;
@@ -26,6 +27,7 @@ public class LoggingManager : MonoBehaviour
     public string conditionNumber = "A";
     public int mapNumber = 1;
     private GameObject map;
+    private Transform startPoint;
     private Transform destination;
     private Vector3 playerToDest;
     private float destinationThreshold = 1.5f;
@@ -52,18 +54,22 @@ public class LoggingManager : MonoBehaviour
         if(mapNumber == 1){
             map = maps[0];
             destination = destinations[0];
+            startPoint = startPoints[0];
         }
         else if(mapNumber == 2){
             map = maps[1];
             destination = destinations[1];
+            startPoint = startPoints[1];
         }
         else if(mapNumber == 3){
             map = maps[2];
             destination = destinations[2];
+            startPoint = startPoints[2];
         }
         else{
             map = maps[3];
             destination = destinations[3];
+            startPoint = startPoints[3];
         }
         foreach (GameObject m in maps)
         {
@@ -190,7 +196,7 @@ public class LoggingManager : MonoBehaviour
             signArrow.highlights = highlights.gameObject;
         }
         else if(isStart){
-            Vector3 relativePlayerPosition = camera.transform.position - map.transform.position;
+            Vector3 relativePlayerPosition = camera.transform.position - startPoint.position;
             playerToDest = player.transform.position - destination.position;
             Vector3 playerToDestXZ = new Vector3(playerToDest.x, 0f, playerToDest.z);
             float timeToNow = (Time.time - startTime);

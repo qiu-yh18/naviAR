@@ -259,7 +259,7 @@ GameObject:
   - component: {fileID: 3897701228452865276}
   m_Layer: 0
   m_Name: Big_trash_bin
-  m_TagString: Untagged
+  m_TagString: Building
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
