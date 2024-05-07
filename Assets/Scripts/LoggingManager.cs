@@ -10,6 +10,8 @@ public class LoggingManager : MonoBehaviour
 {
     public GameObject camera;
     public PlayerCollider player;
+    public GameObject leftController;
+    public GameObject rightController;
     public SignArrowManager signArrow;
     public AbsoluteArrow absoluteArrow;
     public CalibrationManager calibrationManager;
@@ -22,7 +24,7 @@ public class LoggingManager : MonoBehaviour
     public TMP_Text endText;
     public Material successMaterial;
     public Material failMaterial;
-    // public float timeLimit = 300f;
+    public float timeLimit = 600f;
     public int participantNumber = 12;
     public string conditionNumber = "A";
     public int mapNumber = 1;
@@ -187,13 +189,15 @@ public class LoggingManager : MonoBehaviour
             timeString = System.DateTime.Now.ToString("yyyy-MM-dd_HH:mm:ss");
             savepath = Path.Combine(ROOT, participantNumber + "_" + conditionNumber + "_" + mapNumber + "_" + timeString + ".csv");
             writer = new StreamWriter(savepath, true);
-            string line = "Participant number, Timestamp, Relative Pos x, Relative Pos y, Relative Pos z, Env Pos x, Env Pos y, Env Pos z, Real Pos x, Real Pos y, Real Pos z, Real Rotation x, Real Rotation y, Real Rotation z, Dist to Dest, Real Speed, Hit";
+            string line = "Participant number, Timestamp, Relative Pos x, Relative Pos y, Relative Pos z, Env Pos x, Env Pos y, Env Pos z, Env Rot x, Env Rot y, Env Rot z, Real Pos x, Real Pos y, Real Pos z, Real Rot x, Real Rot y, Real Rot z, Dist to Dest, Real Speed, Hit";
             writer.WriteLine(line);
             participantNumberText.gameObject.SetActive(false);
             isStart = true;
             player.gameObject.SetActive(true);
             startTime = Time.time;
             signArrow.highlights = highlights.gameObject;
+            leftController.SetActive(false);
+            rightController.SetActive(false);
         }
         else if(isStart){
             Vector3 relativePlayerPosition = camera.transform.position - startPoint.position;
@@ -211,6 +215,9 @@ public class LoggingManager : MonoBehaviour
                         + map.transform.position.x.ToString("0.000") + "," 
                         + map.transform.position.y.ToString("0.000") + "," 
                         + map.transform.position.z.ToString("0.000") + ","
+                        + map.transform.rotation.x.ToString("0.000") + "," 
+                        + map.transform.rotation.y.ToString("0.000") + "," 
+                        + map.transform.rotation.z.ToString("0.000") + ","
                         + camera.transform.position.x.ToString("0.000") + "," 
                         + camera.transform.position.y.ToString("0.000") + "," 
                         + camera.transform.position.z.ToString("0.000") + ","
@@ -222,17 +229,17 @@ public class LoggingManager : MonoBehaviour
                         + (player.isHit ? 1 : 0);
             writer.WriteLine(line);
             // Time limit
-            // if(timeToNow > timeLimit){
-            //     isStart = false;
-            //     player.gameObject.SetActive(false);
-            //     writer.Close();
-            //     endText.SetText("Time is up! You did not reach the destination. Please take off the headset.");
-            //     Renderer renderer = endCube.GetComponent<Renderer>();
-            //     renderer.material = failMaterial;
-            //     endCube.SetActive(true);
-            //     signArrow.gameObject.SetActive(false);
-            //     isFileWritten = true;
-            // }
+            if(timeToNow > timeLimit){
+                isStart = false;
+                // player.gameObject.SetActive(false);
+                writer.Close();
+                // endText.SetText("Time is up! You did not reach the destination. Please take off the headset.");
+                // Renderer renderer = endCube.GetComponent<Renderer>();
+                // renderer.material = failMaterial;
+                // endCube.SetActive(true);
+                // signArrow.gameObject.SetActive(false);
+                isFileWritten = true;
+            }
             // End condition
             if(playerToDestXZ.magnitude < destinationThreshold){
                 isStart = false;
