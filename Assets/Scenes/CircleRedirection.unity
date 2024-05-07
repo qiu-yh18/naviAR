@@ -2465,8 +2465,8 @@ MonoBehaviour:
   failMaterial: {fileID: 2100000, guid: 6654366d45d22054abd260171b0f7c04, type: 2}
   timeLimit: 600
   participantNumber: 12
-  conditionNumber: A
-  mapNumber: 1
+  conditionNumber: D
+  mapNumber: 3
 --- !u!224 &1453748531 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 237224276654382131, guid: aa81fc76d2fd85d4692baa03073c520a, type: 3}

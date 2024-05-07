@@ -164,7 +164,7 @@ public class LoggingManager : MonoBehaviour
                 cooldownTimer = 0f;
             }
         }
-        if(!calibrationManager.isStartButtonActivated){
+        if(!calibrationManager.isStartButtonActivated && !isStart){
             if (OVRInput.Get(OVRInput.Axis1D.PrimaryHandTrigger) > 0f){
                 if (!isCooldownActive)
                 {
